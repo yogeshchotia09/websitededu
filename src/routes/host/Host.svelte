@@ -273,7 +273,7 @@
 
 	let finished = false;
 
-	function connect_server(code: string) {
+	function connectServer(code: string) {
 		watcherId = localStorage.getItem(code + '_host') || undefined;
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code + '/' + (watcherId ?? ''));
 
@@ -537,7 +537,10 @@
 			}
 		});
 
+		let intentionallyClosed = false;
+
 		socket.addEventListener('close', async (closeEvent) => {
+			if (intentionallyClosed) return;
 			if (closeEvent.code === 4141) {
 				location.assign('/');
 			}
@@ -576,11 +579,16 @@
 				Error: m.code_not_exist()
 			};
 		});
+
+		return () => {
+			intentionallyClosed = true;
+			socket.close();
+		};
 	}
 
 	$effect(() => {
 		const gameCode = code;
-		untrack(() => connect_server(gameCode));
+		return untrack(() => connectServer(gameCode));
 	});
 
 	function onnext() {

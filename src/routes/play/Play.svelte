@@ -589,7 +589,11 @@
 			}
 		});
 
+		let intentionallyClosed = false;
+
 		socket.addEventListener('close', async (closeEvent) => {
+			if (intentionallyClosed) return;
+
 			if (closeEvent.code === 4141) {
 				location.assign('/');
 			}
@@ -628,11 +632,17 @@
 				Error: m.code_not_exist()
 			};
 		});
+
+		return () => {
+			intentionallyClosed = true;
+			socket.close();
+		};
 	}
 
 	$effect(() => {
 		const gameCode = code;
-		untrack(() => connectServer(gameCode));
+
+		return untrack(() => connectServer(gameCode));
 	});
 
 	let name = $derived((leaderboardName ? leaderboardName + ' - ' : '') + setName || m.you());
