@@ -160,8 +160,8 @@
 
 				&:where(:global(:focus, :hover)) {
 					--trans-color: color-mix(in srgb, currentColor 10%, transparent);
-					background: linear-gradient(var(--trans-color), var(--trans-color)),
-						var(--background-color);
+					background:
+						linear-gradient(var(--trans-color), var(--trans-color)), var(--background-color);
 				}
 			}
 		}
