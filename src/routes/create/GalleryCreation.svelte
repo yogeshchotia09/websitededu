@@ -7,7 +7,7 @@
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import { onMount } from 'svelte';
 	import type { Media } from '$lib/types';
-	import { languageTag } from '$lib/paraglide/runtime.js';
+	import { getLocale } from '$lib/paraglide/runtime.js';
 	import type { Instance } from 'tippy.js';
 	import tippy from 'tippy.js';
 
@@ -32,9 +32,9 @@
 	function dateToString(date: Date): string {
 		let currentDate = new Date();
 		if (currentDate.getFullYear() == date.getFullYear()) {
-			return date.toLocaleDateString(languageTag(), same_year);
+			return date.toLocaleDateString(getLocale, same_year);
 		} else {
-			return date.toLocaleDateString(languageTag(), diff_year);
+			return date.toLocaleDateString(getLocale, diff_year);
 		}
 	}
 

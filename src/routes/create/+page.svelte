@@ -17,24 +17,15 @@
 	} from '$lib/storage';
 	import { addIds } from '$lib';
 	import type { PageData } from '../$types';
-	import { i18n } from '$lib/i18n';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	let status:
 		| 'loading'
 		| {
-				creation:
-					| 'failure'
-					| {
-							id: number;
-							exportedFuiz: ExportedFuiz;
-							config: FuizConfig;
-					  };
+				creation: 'failure' | { id: number; exportedFuiz: ExportedFuiz; config: FuizConfig };
 				db: Database;
 		  }
-		| {
-				creations: Creation[];
-				db: Database;
-		  } = $state('loading');
+		| { creations: Creation[]; db: Database } = $state('loading');
 
 	async function getStatus(idParam: string | null) {
 		const db = await loadDatabase(data.session !== null);
@@ -42,32 +33,16 @@
 			const id = parseInt(idParam);
 			const exportedFuiz = await getCreation(id, db);
 			if (!exportedFuiz) {
-				status = {
-					creation: 'failure',
-					db
-				};
+				status = { creation: 'failure', db };
 				return;
 			}
 			const config = addIds(exportedFuiz.config);
 			status = config
-				? {
-						creation: {
-							id,
-							exportedFuiz,
-							config
-						},
-						db
-					}
-				: {
-						creation: 'failure',
-						db
-					};
+				? { creation: { id, exportedFuiz, config }, db }
+				: { creation: 'failure', db };
 		} else {
 			const creations = await getAllCreations(db);
-			status = {
-				creations,
-				db
-			};
+			status = { creations, db };
 		}
 	}
 
@@ -92,7 +67,7 @@
 	<meta property="og:title" content={title} />
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
-	<link rel="canonical" href="{PUBLIC_PLAY_URL}{i18n.resolveRoute('/create')}" />
+	<link rel="canonical" href="{PUBLIC_PLAY_URL}{localizeHref('/create')}" />
 </svelte:head>
 
 {#if status === 'loading'}

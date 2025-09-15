@@ -12,8 +12,8 @@
 	import { getAllCreations, getCreation, loadDatabase } from '$lib/storage';
 	import type { PageData } from '../$types';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
-	import { i18n } from '$lib/i18n';
 	import { toSorted } from '$lib/util';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	function parseInt(str: string | null): number | null {
 		if (str === null) {
@@ -42,7 +42,7 @@
 	<meta property="og:title" content={title} />
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
-	<link rel="canonical" href="{PUBLIC_PLAY_URL}{i18n.resolveRoute('/publish')}" />
+	<link rel="canonical" href="{PUBLIC_PLAY_URL}{localizeHref('/publish')}" />
 </svelte:head>
 
 {#if id}

@@ -5,7 +5,7 @@
 	import Textfield from '$lib/Textfield.svelte';
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import SelectTime from '$lib/SelectTime.svelte';
-	import { availableLanguageTags, languageTag } from '$lib/paraglide/runtime.js';
+	import { availableLanguageTags, getLocale } from '$lib/paraglide/runtime.js';
 	import Icon from '$lib/Icon.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
@@ -27,7 +27,7 @@
 	let author = $state(page.data.session?.user?.name || '');
 	let subjects: string[] = $state([]);
 	let grades: string[] = $state([]);
-	let lang = $state(languageTag());
+	let lang = $state(getLocale());
 
 	function map(lang: string): string {
 		return (

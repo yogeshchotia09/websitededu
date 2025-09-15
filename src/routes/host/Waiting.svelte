@@ -18,7 +18,7 @@
 	import Icon from '$lib/Icon.svelte';
 	import ExitFuiz from './ExitFuiz.svelte';
 	import tippy from 'tippy.js';
-	import { i18n } from '$lib/i18n';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	interface Props {
 		code: string;
@@ -38,7 +38,7 @@
 		onlock
 	}: Props = $props();
 
-	let actualUrl = $derived(PUBLIC_PLAY_URL + i18n.resolveRoute('/play?code=' + code));
+	let actualUrl = $derived(PUBLIC_PLAY_URL + localizeHref('/play?code=' + code));
 
 	function copy_url_to_clipboard() {
 		navigator.clipboard.writeText(actualUrl);
@@ -81,7 +81,7 @@
 			<div style:padding="0.4em">
 				<div>{m.join_at()}</div>
 				<div style:font-weight="bold">
-					{PUBLIC_DISPLAY_PLAY_URL}{i18n.resolveRoute('/play')}
+					{PUBLIC_DISPLAY_PLAY_URL}{localizeHref('/play')}
 				</div>
 			</div>
 		</div>

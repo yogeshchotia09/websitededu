@@ -51,9 +51,9 @@
 			<Header />
 		</header>
 		<form
-			onsubmit={async (e) => {
+			onsubmit={(e) => {
 				e.preventDefault();
-				await submit();
+				submit();
 			}}
 		>
 			<div

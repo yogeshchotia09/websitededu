@@ -20,7 +20,7 @@
 <TypicalPage>
 	<div id="summary">
 		<div>
-			<FancyButton onclick={async () => await playIdlessConfig(config, options)}>
+			<FancyButton onclick={() => playIdlessConfig(config, options)}>
 				<div style:padding="0 0.3em">{m.play_again()}</div>
 			</FancyButton>
 		</div>

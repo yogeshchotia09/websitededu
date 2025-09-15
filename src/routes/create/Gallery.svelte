@@ -24,13 +24,15 @@
 		type Database,
 		deleteCreation,
 		addCreation,
-		generateUuid
+		generateUuid,
+		type CreationId
 	} from '$lib/storage';
 	import type { PageData } from './$types';
 	import { share } from './lib';
 	import JSZip from 'jszip';
 	import { page } from '$app/state';
 	import { signIn, signOut } from '@auth/sveltekit/client';
+	import type { Instance } from 'tippy.js';
 
 	interface Props {
 		creations: Creation[];
@@ -226,6 +228,21 @@
 			})
 		);
 	}
+
+	async function onDownload(id: CreationId) {
+		const creation = await getCreation(id, db);
+		if (!creation) return;
+		const configJson = creation.config;
+		await downloadFuiz(configJson);
+	}
+
+	async function onShare(id: CreationId, e: Instance) {
+		const creation = await getCreation(id, db);
+		if (creation) {
+			await share(creation.config, page.data.user ? creation.uniqueId : undefined);
+		}
+		e.show();
+	}
 </script>
 
 <TypicalPage>
@@ -351,19 +368,8 @@
 								dialog.open();
 							}}
 							onplay={() => goto('host?id=' + id)}
-							ondownload={async () => {
-								const creation = await getCreation(id, db);
-								if (!creation) return;
-								const configJson = creation.config;
-								await downloadFuiz(configJson);
-							}}
-							onshare={async (e) => {
-								const creation = await getCreation(id, db);
-								if (creation) {
-									await share(creation.config, page.data.user ? creation.uniqueId : undefined);
-								}
-								e.show();
-							}}
+							ondownload={() => onDownload(id)}
+							onshare={(e) => onShare(id, e)}
 						/>
 					{/each}
 					{#if $dialog.expanded}

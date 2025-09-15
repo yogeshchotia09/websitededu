@@ -13,8 +13,8 @@
 	import QuestionStatistics from './host/QuestionStatistics.svelte';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
-	import { i18n } from '$lib/i18n';
 	import FancyButton from '$lib/FancyButton.svelte';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	interface Props {
 		data: PageData;
@@ -30,6 +30,26 @@
 	onMount(() => {
 		answered = (localStorage.getItem('answered') ?? '').length > 0;
 	});
+
+	async function onChooseFavoriteFeature(e: number) {
+		const field = Object.keys(data.stats)[e];
+
+		let resp = await fetch('/increment', {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json'
+			},
+			body: JSON.stringify(field)
+		});
+
+		localStorage.setItem('answered', 'true');
+
+		let res = await resp.json();
+
+		data.stats = res;
+
+		answered = true;
+	}
 </script>
 
 <svelte:head>
@@ -37,7 +57,7 @@
 	<meta property="og:title" content={title} />
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
-	<link rel="canonical" href={PUBLIC_PLAY_URL + i18n.resolveRoute('/')} />
+	<link rel="canonical" href={PUBLIC_PLAY_URL + localizeHref('/')} />
 </svelte:head>
 
 <main>
@@ -84,25 +104,7 @@
 						/>
 					{:else}
 						<QuestionAnswers
-							onanswer={async (e) => {
-								const field = Object.keys(data.stats)[e];
-
-								let resp = await fetch('/increment', {
-									method: 'POST',
-									headers: {
-										'content-type': 'application/json'
-									},
-									body: JSON.stringify(field)
-								});
-
-								localStorage.setItem('answered', 'true');
-
-								let res = await resp.json();
-
-								data.stats = res;
-
-								answered = true;
-							}}
+							onanswer={onChooseFavoriteFeature}
 							questionText={m.which_feature()}
 							timeLeft={undefined}
 							timeStarted={undefined}

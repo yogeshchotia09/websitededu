@@ -75,6 +75,14 @@
 	}
 
 	let popoverElement: HTMLElement | undefined = $state();
+
+	async function onDelete(index: number) {
+		slides.splice(index, 1);
+		if (index <= selectedSlideIndex) {
+			await changeSelected(selectedSlideIndex - 1);
+		}
+		slides = slides;
+	}
 </script>
 
 <div id="sidebar" style:display="flex" style:flex-direction="column">
@@ -113,19 +121,13 @@
 							{index}
 							selected={index === selectedSlideIndex}
 							onselect={() => changeSelected(index)}
-							ondelete={async () => {
-								slides.splice(index, 1);
-								if (index <= selectedSlideIndex) {
-									await changeSelected(selectedSlideIndex - 1);
-								}
-								slides = slides;
-							}}
-							onduplicate={async () => {
+							ondelete={() => onDelete(index)}
+							onduplicate={() => {
 								const sameSlide = structuredClone($state.snapshot(slide));
 								sameSlide.id = Date.now();
 								slides.splice(index + 1, 0, sameSlide);
 								slides = slides;
-								await changeSelected(index + 1);
+								changeSelected(index + 1);
 							}}
 						/>
 					</div>
@@ -142,7 +144,7 @@
 				style:padding="1em"
 			>
 				<FancyButton
-					onclick={async () => {
+					onclick={() => {
 						popoverElement?.hidePopover();
 						slides.push({
 							MultipleChoice: {
@@ -156,7 +158,7 @@
 							id: Date.now()
 						});
 						slides = slides;
-						await changeSelected(slides.length - 1);
+						changeSelected(slides.length - 1);
 					}}
 				>
 					<div style:padding="0.2em 0.6em">
@@ -164,7 +166,7 @@
 					</div>
 				</FancyButton>
 				<FancyButton
-					onclick={async () => {
+					onclick={() => {
 						popoverElement?.hidePopover();
 						slides.push({
 							TypeAnswer: {
@@ -178,13 +180,13 @@
 							id: Date.now()
 						});
 						slides = slides;
-						await changeSelected(slides.length - 1);
+						changeSelected(slides.length - 1);
 					}}
 				>
 					<div style:padding="0.2em 0.6em">{m.short_answer()}</div>
 				</FancyButton>
 				<FancyButton
-					onclick={async () => {
+					onclick={() => {
 						popoverElement?.hidePopover();
 						slides.push({
 							Order: {
@@ -198,7 +200,7 @@
 							id: Date.now()
 						});
 						slides = slides;
-						await changeSelected(slides.length - 1);
+						changeSelected(slides.length - 1);
 					}}
 				>
 					<div style:padding="0.2em 0.6em">{m.puzzle()}</div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { languageTag } from '$lib/paraglide/runtime';
+	import { getLocale } from '$lib/paraglide/runtime';
 	import type { PageData } from './$types';
 
 	interface Props {
@@ -25,7 +25,7 @@
 						<h3>{post.title}</h3>
 						<p class="description">{post.description}</p>
 						<p class="date">
-							{post.date.toLocaleDateString(languageTag(), {
+							{post.date.toLocaleDateString(getLocale(), {
 								year: 'numeric',
 								day: 'numeric',
 								month: 'short'

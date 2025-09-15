@@ -10,6 +10,7 @@
 	import { share } from './lib';
 	import { page } from '$app/state';
 	import { untrack } from 'svelte';
+	import type { Instance } from 'tippy.js';
 
 	interface Props {
 		id: number;
@@ -105,6 +106,11 @@
 			}
 		}).length > 0
 	);
+
+	async function onShare(e: Instance) {
+		await share(removeIds(config), page.data.user ? exportedFuiz.uniqueId : undefined);
+		e.show();
+	}
 </script>
 
 <div
@@ -117,10 +123,7 @@
 		bind:title={config.title}
 		{id}
 		{db}
-		onshare={async (e) => {
-			await share(removeIds(config), page.data.user ? exportedFuiz.uniqueId : undefined);
-			e.show();
-		}}
+		onshare={onShare}
 		errorMessage={no_answer
 			? m.missing_answers()
 			: no_correct_answer

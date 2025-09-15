@@ -78,7 +78,7 @@
 					</FancyButton>
 				</div>
 				<div style:flex="1">
-					<FancyButton onclick={async () => await goto('create')}>
+					<FancyButton onclick={() => goto('create')}>
 						<div style:padding="5px 10px" style:white-space="nowrap">{m.end()}</div>
 					</FancyButton>
 				</div>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$lib/paraglide/messages.js';
 
-	import { availableLanguageTags, languageTag } from '$lib/paraglide/runtime.js';
+	import { availableLanguageTags, getLocale } from '$lib/paraglide/runtime.js';
 	import { page } from '$app/state';
 	import IconButton from './IconButton.svelte';
 	import { createDialog } from 'svelte-headlessui';
@@ -34,7 +34,7 @@
 					<a
 						href={i18n.route(page.url.pathname + page.url.search)}
 						hreflang={lang}
-						aria-current={lang === languageTag() ? 'page' : undefined}
+						aria-current={lang === getLocale() ? 'page' : undefined}
 					>
 						{new Intl.DisplayNames([lang], {
 							type: 'language'

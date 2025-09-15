@@ -6,7 +6,7 @@
 	import IconButton from '$lib/IconButton.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import Textfield from '$lib/Textfield.svelte';
-	import { getCreation, type Database } from '$lib/storage';
+	import { getCreation, type CreationId, type Database } from '$lib/storage';
 	import { onMount } from 'svelte';
 	import tippy, { type Instance } from 'tippy.js';
 
@@ -55,6 +55,13 @@
 		});
 
 		playTippyInstance.show();
+	}
+
+	async function onDownload(id: CreationId) {
+		const creation = await getCreation(id, db);
+		if (!creation) return;
+		const configJson = creation.config;
+		await downloadFuiz(configJson);
 	}
 </script>
 
@@ -123,12 +130,7 @@
 				size="1em"
 				src="$lib/assets/download.svg"
 				alt={m.download()}
-				onclick={async () => {
-					const creation = await getCreation(id, db);
-					if (!creation) return;
-					const configJson = creation.config;
-					await downloadFuiz(configJson);
-				}}
+				onclick={() => onDownload(id)}
 			/>
 			<div bind:this={playButton}>
 				<IconButton
@@ -136,7 +138,7 @@
 					src="$lib/assets/slideshow.svg"
 					alt={m.host()}
 					disabled={errorMessage != undefined}
-					onclick={async () => await goto('host?id=' + id)}
+					onclick={() => goto('host?id=' + id)}
 					onmouseenter={() => onmouseenter()}
 					onfocus={() => onmouseenter()}
 				/>

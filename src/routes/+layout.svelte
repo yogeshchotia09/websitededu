@@ -6,8 +6,6 @@
 
 	import { navigating } from '$app/state';
 	import Loading from '$lib/Loading.svelte';
-	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
-	import { i18n } from '$lib/i18n';
 	import { onMount, untrack } from 'svelte';
 
 	interface Props {
@@ -52,13 +50,11 @@
 	});
 </script>
 
-<ParaglideJS {i18n}>
-	{#if mounting || longNavigating}
-		<Loading />
-	{:else}
-		{@render children?.()}
-	{/if}
-</ParaglideJS>
+{#if mounting || longNavigating}
+	<Loading />
+{:else}
+	{@render children?.()}
+{/if}
 
 <style>
 	:root {

@@ -8,8 +8,7 @@
 	import FancyButton from '$lib/FancyButton.svelte';
 	import { goto } from '$app/navigation';
 	import { addCreation, generateUuid, loadDatabase } from '$lib/storage';
-	import { i18n } from '$lib/i18n';
-	import { languageTag } from '$lib/paraglide/runtime';
+	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
 	import { assertUnreachable, buttonColors } from '$lib';
 
 	interface Props {
@@ -35,6 +34,16 @@
 		);
 
 		return id;
+	}
+
+	async function onImport() {
+		const id = await addToCollection();
+		await goto(localizeHref('/create') + '?id=' + id.toString());
+	}
+
+	async function onStart() {
+		const id = await addToCollection();
+		await goto(localizeHref('/host') + '?id=' + id.toString());
 	}
 </script>
 
@@ -64,25 +73,17 @@
 						{m.author()}: {fuiz.author}
 					</div>
 					<div>
-						{m.language()}: {new Intl.DisplayNames([languageTag()], {
+						{m.language()}: {new Intl.DisplayNames([getLocale()], {
 							type: 'language'
 						}).of(fuiz.language)}
 					</div>
 				</div>
 			</div>
-			<FancyButton
-				onclick={async () => {
-					const id = await addToCollection();
-					await goto(i18n.resolveRoute('/create') + '?id=' + id.toString());
-				}}
-			>
+			<FancyButton onclick={onImport}>
 				<div style:font-family="Poppins">{m.import_fuiz()}</div>
 			</FancyButton>
 			<FancyButton
-				onclick={async () => {
-					const id = await addToCollection();
-					await goto(i18n.resolveRoute('/host') + '?id=' + id.toString());
-				}}
+				onclick={onStart}
 				backgroundColor={buttonColors[1][0]}
 				backgroundDeepColor={buttonColors[1][1]}
 			>

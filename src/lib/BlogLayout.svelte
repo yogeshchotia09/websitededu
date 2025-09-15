@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Metadata } from '../routes/posts/lib';
-	import { languageTag } from '$lib/paraglide/runtime.js';
+	import { getLocale } from '$lib/paraglide/runtime.js';
 
 	interface Props {
 		metadata: Metadata;
@@ -26,7 +26,7 @@
 			{metadata.description}
 		</p>
 		<p class="date">
-			{metadata.date.toLocaleDateString(languageTag(), {
+			{metadata.date.toLocaleDateString(getLocale(), {
 				year: 'numeric',
 				day: 'numeric',
 				month: 'short'

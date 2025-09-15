@@ -10,7 +10,7 @@
 	import { goto } from '$app/navigation';
 	import Loading from '$lib/Loading.svelte';
 	import { mapIdlessMedia, type IdlessFuizConfig } from '$lib/types';
-	import { i18n } from '$lib/i18n';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	interface Props {
 		data: PageData;
@@ -51,16 +51,11 @@
 		};
 
 		const id = await addCreation(
-			{
-				lastEdited: Date.now(),
-				uniqueId: generateUuid(),
-				versionId: 0,
-				config: fuizWithoutRef
-			},
+			{ lastEdited: Date.now(), uniqueId: generateUuid(), versionId: 0, config: fuizWithoutRef },
 			db
 		);
 
-		await goto(i18n.resolveRoute('/create') + '?id=' + id.toString());
+		await goto(localizeHref('/create') + '?id=' + id.toString());
 	});
 </script>
 

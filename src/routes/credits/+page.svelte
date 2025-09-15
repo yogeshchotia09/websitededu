@@ -14,7 +14,7 @@
 	import AnchorMessage from '$lib/AnchorMessage.svelte';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import TypicalPage from '$lib/TypicalPage.svelte';
-	import { i18n } from '$lib/i18n';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	const title = m.credits_title();
 	const description = m.credits_desc();
@@ -25,7 +25,7 @@
 	<meta property="og:title" content={title} />
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
-	<link rel="canonical" href="{PUBLIC_PLAY_URL}{i18n.resolveRoute('/credits')}" />
+	<link rel="canonical" href="{PUBLIC_PLAY_URL}{localizeHref('/credits')}" />
 </svelte:head>
 
 <TypicalPage>

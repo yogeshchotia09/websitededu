@@ -4,7 +4,7 @@
 	import type { PageData } from './$types';
 	import MainHeader from '../MainHeader.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
-	import { i18n } from '$lib/i18n';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	interface Props {
 		data: PageData;
@@ -33,10 +33,7 @@
 				<div>
 					{#each data.providers as provider}
 						<FancyButton
-							onclick={() =>
-								signIn(provider.id, {
-									callbackUrl: i18n.resolveRoute('/create')
-								})}
+							onclick={() => signIn(provider.id, { callbackUrl: localizeHref('/create') })}
 							backgroundColor="var(--background-color)"
 							backgroundDeepColor="var(--color)"
 							foregroundColor="var(--color)"
