@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { buttonColors, limits } from '$lib';
@@ -9,13 +9,9 @@
 	import Answer from './Answer.svelte';
 	import { backOut } from 'svelte/easing';
 	import { flip } from 'svelte/animate';
-	import type { MultipleChoiceAnswer } from '$lib/types';
 
-	interface Props {
-		answers: MultipleChoiceAnswer[];
-	}
-
-	let { answers = $bindable() }: Props = $props();
+	/** @type {{answers: import('$lib/types').MultipleChoiceAnswer[];}} */
+	let { answers = $bindable() } = $props();
 </script>
 
 <div id="grid" style:display="grid" style:gap="0.2em" style:width="100%">

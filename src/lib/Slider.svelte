@@ -1,14 +1,6 @@
-<script lang="ts">
-	interface Props {
-		id: string;
-		value: number;
-		min: number;
-		max: number;
-		children?: import('svelte').Snippet;
-		onchange?: (value: number) => void;
-	}
-
-	let { id, value = $bindable(), min, max, children, onchange }: Props = $props();
+<script>
+	/** @type {{id: string;value: number;min: number;max: number;children?: import('svelte').Snippet;onchange?: (value: number) => void;}} */
+	let { id, value = $bindable(), min, max, children, onchange } = $props();
 </script>
 
 <div id="group">

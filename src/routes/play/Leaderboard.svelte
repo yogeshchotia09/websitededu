@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { medalColors } from '$lib';
@@ -7,14 +7,8 @@
 	import medal from '$lib/assets/medal.svg';
 	import Icon from '$lib/Icon.svelte';
 
-	interface Props {
-		name: string;
-		score: number;
-		position: number | undefined;
-		final: boolean;
-	}
-
-	let { name, score, position, final }: Props = $props();
+	/** @type {{name: string;score: number;position: number | undefined;final: boolean;}} */
+	let { name, score, position, final } = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import Fullscreen from '$lib/Fullscreen.svelte';
@@ -8,21 +8,19 @@
 	import locked from '$lib/assets/locked.svg';
 	import IconButton from '$lib/IconButton.svelte';
 	import skip from '$lib/assets/skip.svg';
-	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import LanguageSwitcher from '$lib/LanguageSwitcher.svelte';
 	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
 	import ExitFuiz from './ExitFuiz.svelte';
 
-	interface Props {
-		bindableGameInfo: BindableGameInfo;
-		gameInfo: SharedGameInfo;
-		fullscreenElement?: HTMLElement | undefined;
-		showSkip?: boolean;
-		onnext?: () => void;
-		onlock?: (locked: boolean) => void;
-	}
-
+	/** @type {{
+	 * 	bindableGameInfo: import('./+page').BindableGameInfo;
+	 * 	gameInfo: import('./+page').SharedGameInfo;
+	 * 	fullscreenElement?: HTMLElement | undefined;
+	 * 	showSkip?: boolean;
+	 * 	onnext?: () => void;
+	 * 	onlock?: (locked: boolean) => void;
+	 * }}*/
 	let {
 		bindableGameInfo = $bindable(),
 		gameInfo,
@@ -30,7 +28,7 @@
 		showSkip = false,
 		onnext,
 		onlock
-	}: Props = $props();
+	} = $props();
 </script>
 
 <div

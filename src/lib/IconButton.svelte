@@ -1,18 +1,17 @@
-<script lang="ts">
+<script>
 	import Icon from './Icon.svelte';
 
-	interface Props {
-		src: string;
-		alt: string;
-		size: string;
-		disabled?: boolean;
-		padding?: string;
-		onclick?: () => void;
-		onmouseover?: () => void;
-		onmouseenter?: () => void;
-		onfocus?: () => void;
-	}
-
+	/** @type {{
+	 * src: string,
+	 * alt: string,
+	 * size: string,
+	 * disabled?: boolean | undefined,
+	 * padding?: string | undefined,
+	 * onclick?: (() => void) | undefined,
+	 * onmouseover?: (() => void) | undefined,
+	 * onmouseenter?: (() => void) | undefined,
+	 * onfocus?: (() => void) | undefined,
+	}}*/
 	let {
 		src,
 		alt,
@@ -23,7 +22,7 @@
 		onmouseover,
 		onmouseenter,
 		onfocus
-	}: Props = $props();
+	} = $props();
 </script>
 
 <button

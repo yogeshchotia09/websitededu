@@ -1,11 +1,6 @@
-<script lang="ts">
-	import type { PublishedFuiz } from '$lib/types';
-
-	interface Props {
-		data: PublishedFuiz;
-	}
-
-	let { data }: Props = $props();
+<script>
+	/** @type {{data: import('$lib/types').PublishedFuiz;}} */
+	let { data } = $props();
 </script>
 
 <a class="container" href="library/public/{data.storage_id}">

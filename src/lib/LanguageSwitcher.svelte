@@ -1,19 +1,14 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
-	import { availableLanguageTags, languageTag } from '$lib/paraglide/runtime.js';
-	import { page } from '$app/state';
+	import { locales, setLocale } from '$lib/paraglide/runtime.js';
 	import IconButton from './IconButton.svelte';
 	import { createDialog } from 'svelte-headlessui';
-	import { i18n } from './i18n';
 
 	const dialog = createDialog();
 
-	interface Props {
-		up?: boolean;
-	}
-
-	let { up = false }: Props = $props();
+	/** @type {{ up?: boolean }}*/
+	let { up = false } = $props();
 </script>
 
 <div>
@@ -28,18 +23,14 @@
 
 	{#if $dialog.expanded}
 		<ul use:dialog.modal style:--y={up ? 'calc(-100% - 1.25em)' : '0'}>
-			{#each availableLanguageTags as lang}
+			{#each locales as lang}
 				<li>
 					<!-- the hreflang attribute decides which language the link points to -->
-					<a
-						href={i18n.route(page.url.pathname + page.url.search)}
-						hreflang={lang}
-						aria-current={lang === languageTag() ? 'page' : undefined}
-					>
+					<button onclick={() => setLocale(lang)}>
 						{new Intl.DisplayNames([lang], {
 							type: 'language'
 						}).of(lang)}
-					</a>
+					</button>
 				</li>
 			{/each}
 		</ul>
@@ -76,8 +67,12 @@
 		white-space: nowrap;
 	}
 
-	a {
+	button {
 		color: inherit;
+		background: none;
+		border: none;
+		font: inherit;
+		cursor: pointer;
 		text-decoration: none;
 	}
 </style>

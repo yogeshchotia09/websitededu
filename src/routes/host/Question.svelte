@@ -1,22 +1,19 @@
-<script lang="ts">
+<script>
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
-	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
-	import type { Media } from '$lib/types';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 
-	interface Props {
-		bindableGameInfo: BindableGameInfo;
-		gameInfo: SharedGameInfo;
-		questionText: string;
-		timeStarted: number;
-		media: Media | undefined;
-		onlock?: (locked: boolean) => void;
-		onnext?: () => void;
-	}
-
+	/** @type {{
+	 * bindableGameInfo: import('./+page').BindableGameInfo;
+	 * gameInfo: import('./+page').SharedGameInfo;
+	 * questionText: string;
+	 * timeStarted: number;
+	 * media: import('$lib/types').Media | undefined;
+	 * onlock?: (locked: boolean) => void;
+	 * onnext?: () => void;
+	 * }} */
 	let {
 		bindableGameInfo = $bindable(),
 		gameInfo,
@@ -25,9 +22,10 @@
 		media,
 		onlock,
 		onnext
-	}: Props = $props();
+	} = $props();
 
-	let fullscreenElement: HTMLElement | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let fullscreenElement = $state();
 </script>
 
 <svelte:head>

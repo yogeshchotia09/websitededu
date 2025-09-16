@@ -1,19 +1,18 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 	import PlayersList from '$lib/Game/PlayersList.svelte';
 
-	interface Props {
-		name: string;
-		gameCode: string;
-		available: [string, boolean][];
-		max: number;
-		onchoose: (players: string[]) => void;
-	}
-
-	let { name, gameCode, available = $bindable(), max, onchoose }: Props = $props();
+	/** @type {{
+	 * name: string;
+	 * gameCode: string;
+	 * available: [string, boolean][];
+	 * max: number;
+	 * onchoose: (players: string[]) => void;
+	 * }} */
+	let { name, gameCode, available = $bindable(), max, onchoose } = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">

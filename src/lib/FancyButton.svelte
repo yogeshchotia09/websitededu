@@ -1,17 +1,17 @@
-<script lang="ts">
+<script>
 	import FancyButtonBase from './FancyButtonBase.svelte';
-	interface Props {
-		foregroundColor?: string | undefined;
-		backgroundColor?: string | undefined;
-		backgroundDeepColor?: string | undefined;
-		disabled?: boolean;
-		active?: boolean;
-		type?: 'button' | 'submit' | 'reset' | undefined;
-		height?: string | undefined;
-		children?: import('svelte').Snippet;
-		onclick?: () => void;
-	}
 
+	/** @type {{
+	 * foregroundColor?: string | undefined,
+	 * backgroundColor?: string | undefined,
+	 * backgroundDeepColor?: string | undefined,
+	 * disabled?: boolean,
+	 * active?: boolean,
+	 * type?: 'button' | 'submit' | 'reset' | undefined,
+	 * height?: string | undefined,
+	 * onclick?: () => void,
+	 * children?: import('svelte').Snippet
+	 * }} */
 	let {
 		foregroundColor = undefined,
 		backgroundColor = undefined,
@@ -22,7 +22,7 @@
 		height = undefined,
 		onclick = undefined,
 		children
-	}: Props = $props();
+	} = $props();
 </script>
 
 <FancyButtonBase

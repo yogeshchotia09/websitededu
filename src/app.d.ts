@@ -1,5 +1,3 @@
-import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
-import type { ParaglideLocals } from '@inlang/paraglide-sveltekit';
 import type {
 	Ai,
 	D1Database,
@@ -24,9 +22,6 @@ type CounterWorker = Service<CloudflareWorkerEntrypoint<CounterService>>;
 declare global {
 	namespace App {
 		// interface Error {}
-		interface Locals {
-			paraglide: ParaglideLocals<AvailableLanguageTag>;
-		}
 		// interface PageData {}
 		interface Platform {
 			env: {

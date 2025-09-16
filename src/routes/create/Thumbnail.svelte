@@ -1,24 +1,15 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import MultipleChoiceThumbnail from './MultipleChoiceThumbnail.svelte';
 	import delete_slide from '$lib/assets/delete.svg';
 	import content_copy from '$lib/assets/content_copy.svg';
 	import IconButton from '$lib/IconButton.svelte';
-	import type { Slide } from '$lib/types';
 	import TypeAnswerThumbnail from './TypeAnswerThumbnail.svelte';
 	import OrderThumbnail from './OrderThumbnail.svelte';
 
-	interface Props {
-		slide: Slide;
-		index: number;
-		selected: boolean;
-		ondelete: () => void;
-		onduplicate: () => void;
-		onselect: () => void;
-	}
-
-	let { slide, index, selected, ondelete, onduplicate, onselect }: Props = $props();
+	/** @type {{slide: import('$lib/types').Slide;index: number;selected: boolean;ondelete: () => void;onduplicate: () => void;onselect: () => void;}} */
+	let { slide, index, selected, ondelete, onduplicate, onselect } = $props();
 </script>
 
 <div style:display="flex" style:gap="0.4em" style:box-sizing="border-box">

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import khaleel from '$lib/assets/people/Khaleel.webp';
@@ -14,7 +14,7 @@
 	import AnchorMessage from '$lib/AnchorMessage.svelte';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import TypicalPage from '$lib/TypicalPage.svelte';
-	import { i18n } from '$lib/i18n';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	const title = m.credits_title();
 	const description = m.credits_desc();
@@ -25,7 +25,7 @@
 	<meta property="og:title" content={title} />
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
-	<link rel="canonical" href="{PUBLIC_PLAY_URL}{i18n.resolveRoute('/credits')}" />
+	<link rel="canonical" href="{PUBLIC_PLAY_URL}{localizeHref('/credits')}" />
 </svelte:head>
 
 <TypicalPage>
@@ -130,13 +130,13 @@
 				href="https://incompetech.com/wordpress/"
 				image={{ src: music, alt: m.music() }}
 				background="#23456740"
-				message={'"Thinking Music" Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License. http://creativecommons.org/licenses/by/4.0/'}
+				message="&quot;Thinking Music&quot; Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License. http://creativecommons.org/licenses/by/4.0/"
 			/>
 			<AnchorMessage
 				href="https://www.youtube.com/watch?v=_h47TNIKJYo&pp=ygUHIGJlZS4gMw%3D%3D"
 				image={{ src: music, alt: m.music() }}
 				background="#23456740"
-				message={'"bee. 3" GroovyDominoes52. can use in your videos or games but always remember to credit and not steal'}
+				message="&quot;bee. 3&quot; GroovyDominoes52. can use in your videos or games but always remember to credit and not steal"
 			/>
 		</section>
 	</div>

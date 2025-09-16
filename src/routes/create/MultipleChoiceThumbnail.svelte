@@ -1,16 +1,12 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { buttonColors } from '$lib';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
-	import type { MultipleChoiceSlide } from '$lib/types';
 
-	interface Props {
-		slide: MultipleChoiceSlide;
-	}
-
-	let { slide }: Props = $props();
+	/** @type {{slide: import('$lib/types').MultipleChoiceSlide;}} */
+	let { slide } = $props();
 </script>
 
 <div

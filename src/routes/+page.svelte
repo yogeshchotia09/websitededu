@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 	import warning from '$lib/assets/error.svg';
 
@@ -11,16 +11,11 @@
 	import MainHeader from './MainHeader.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import QuestionStatistics from './host/QuestionStatistics.svelte';
-	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
-	import { i18n } from '$lib/i18n';
 	import FancyButton from '$lib/FancyButton.svelte';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data = $bindable() }: Props = $props();
+	let { data = $bindable() } = $props();
 
 	const title = m.main_title();
 	const description = m.main_desc();
@@ -30,6 +25,30 @@
 	onMount(() => {
 		answered = (localStorage.getItem('answered') ?? '').length > 0;
 	});
+
+	/**
+	 * Handle when a user chooses their favorite feature.
+	 * @param {number} e
+	 */
+	async function onChooseFavoriteFeature(e) {
+		const field = Object.keys(data.stats)[e];
+
+		let resp = await fetch('/increment', {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json'
+			},
+			body: JSON.stringify(field)
+		});
+
+		localStorage.setItem('answered', 'true');
+
+		let res = await resp.json();
+
+		data.stats = res;
+
+		answered = true;
+	}
 </script>
 
 <svelte:head>
@@ -37,7 +56,7 @@
 	<meta property="og:title" content={title} />
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
-	<link rel="canonical" href={PUBLIC_PLAY_URL + i18n.resolveRoute('/')} />
+	<link rel="canonical" href={PUBLIC_PLAY_URL + localizeHref('/')} />
 </svelte:head>
 
 <main>
@@ -84,25 +103,7 @@
 						/>
 					{:else}
 						<QuestionAnswers
-							onanswer={async (e) => {
-								const field = Object.keys(data.stats)[e];
-
-								let resp = await fetch('/increment', {
-									method: 'POST',
-									headers: {
-										'content-type': 'application/json'
-									},
-									body: JSON.stringify(field)
-								});
-
-								localStorage.setItem('answered', 'true');
-
-								let res = await resp.json();
-
-								data.stats = res;
-
-								answered = true;
-							}}
+							onanswer={onChooseFavoriteFeature}
 							questionText={m.which_feature()}
 							timeLeft={undefined}
 							timeStarted={undefined}
@@ -213,7 +214,7 @@
 	<section>
 		<div class="split">
 			<div>
-				<h2><Anchor href="posts/introducing-fuiz">{m.collab_over_comp()}</Anchor></h2>
+				<h2>{m.collab_over_comp()}</h2>
 				<p>
 					{m.collab_over_comp_desc()}
 				</p>

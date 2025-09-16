@@ -1,13 +1,17 @@
-<script lang="ts">
-	interface Props {
-		checked: boolean;
-		id: string;
-		stuck?: boolean | undefined;
-		children?: import('svelte').Snippet;
-		onchange?: (boolean: boolean) => void;
-	}
+<script>
+	/** @type {{checked: boolean;id: string;stuck?: boolean | undefined;children?: import('svelte').Snippet;onchange?: (boolean: boolean) => void;}} */
+	let { checked = $bindable(), id, stuck = undefined, children, onchange } = $props();
 
-	let { checked = $bindable(), id, stuck = undefined, children, onchange }: Props = $props();
+	/** @type {import('svelte/elements').FormEventHandler<HTMLInputElement>} */
+	const onInput = (e) => {
+		if (stuck === undefined) {
+			/** @type {HTMLInputElement | undefined} */
+			// @ts-ignore
+			const target = e?.target;
+			checked = target?.checked ?? checked;
+			onchange?.(checked);
+		}
+	};
 </script>
 
 <div id="group" data-checked={checked}>
@@ -17,12 +21,7 @@
 		role="switch"
 		{checked}
 		disabled={stuck !== undefined}
-		oninput={(e) => {
-			if (stuck === undefined) {
-				checked = (e?.target as HTMLInputElement | undefined)?.checked ?? checked;
-				onchange?.(checked);
-			}
-		}}
+		oninput={onInput}
 	/>
 	<label for={id}>{@render children?.()}</label>
 	<button

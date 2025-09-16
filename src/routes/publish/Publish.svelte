@@ -1,35 +1,36 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { tomlifyConfig, stringifyToml } from '$lib';
 	import Textfield from '$lib/Textfield.svelte';
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import SelectTime from '$lib/SelectTime.svelte';
-	import { availableLanguageTags, languageTag } from '$lib/paraglide/runtime.js';
+	import { locales, getLocale } from '$lib/paraglide/runtime.js';
 	import Icon from '$lib/Icon.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import { deserialize } from '$app/forms';
-	import { getMedia, type Media } from '$lib/types';
-	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
+	import { getMedia } from '$lib/types';
+	import { updateCreation } from '$lib/storage';
 	import { page } from '$app/state';
 	import Subject from './Subject.svelte';
 	import Grade from './Grade.svelte';
 
-	interface Props {
-		creation: ExportedFuiz;
-		id: number;
-		db: Database;
-	}
-
-	let { creation = $bindable(), id, db }: Props = $props();
+	/** @type {{creation: import('$lib/storage').ExportedFuiz;id: number;db: import('$lib/storage').Database;}} */
+	let { creation = $bindable(), id, db } = $props();
 
 	let author = $state(page.data.session?.user?.name || '');
-	let subjects: string[] = $state([]);
-	let grades: string[] = $state([]);
-	let lang = $state(languageTag());
+	/** @type {string[]} */
+	let subjects = $state([]);
+	/** @type {string[]} */
+	let grades = $state([]);
+	let lang = $state(getLocale());
 
-	function map(lang: string): string {
+	/**
+	 * @param {string} lang
+	 * @returns {string}
+	 */
+	function map(lang) {
 		return (
 			new Intl.DisplayNames([lang], {
 				type: 'language'
@@ -37,8 +38,17 @@
 		);
 	}
 
+	/** @type {import('$lib/types').Media | undefined} */
 	let media = $derived(
-		creation.config.slides.reduce<Media | undefined>((m, s) => m || getMedia(s), undefined)
+		creation.config.slides.reduce(
+			/**
+			 * @param {import('$lib/types').Media | undefined} m
+			 * @param {import('$lib/types').GenericIdlessSlide<import('$lib/types').Media | undefined>} s
+			 * @returns {import('$lib/types').Media | undefined}
+			 */
+			(m, s) => m || getMedia(s),
+			undefined
+		)
 	);
 
 	async function publish() {
@@ -72,8 +82,9 @@
 
 		if (resjson.type !== 'success') return;
 
-		/* eslint-disable */
-		const { r2_key }: { r2_key: string | undefined } = (resjson.data as any) || {
+		/** @type {{ r2_key: string | undefined }} */
+		// @ts-ignore
+		const { r2_key } = resjson.data || {
 			r2_key: undefined
 		};
 
@@ -90,11 +101,14 @@
 		await updateCreation(id, creation, db);
 	}
 
-	let reasonState: string | undefined = $state(undefined);
+	/** @type {string | undefined} */
+	let reasonState = $state(undefined);
 
-	async function checkRequest(
-		pending_r2_key: string | undefined
-	): Promise<'pending' | 'approved' | 'denied' | undefined> {
+	/**
+	 * @param {string | undefined} pending_r2_key
+	 * @returns {Promise<'pending' | 'approved' | 'denied' | undefined>}
+	 */
+	async function checkRequest(pending_r2_key) {
 		if (!pending_r2_key) return undefined;
 		const formdata = new FormData();
 		formdata.append('r2_key', pending_r2_key);
@@ -110,14 +124,11 @@
 		const resjson = deserialize(await res.text());
 		if (resjson.type !== 'success') return undefined;
 
-		const {
-			status,
-			reason
-		}: { status: 'pending' | 'approved' | 'denied' | undefined; reason: string | undefined } =
-			/* eslint-disable */
-			(resjson.data as any) || {
-				status: undefined
-			};
+		/** @type {{ status: 'pending' | 'approved' | 'denied' | undefined; reason: string | undefined }} */
+		// @ts-ignore
+		const { status, reason } = resjson.data || {
+			status: undefined
+		};
 
 		if (!status) return undefined;
 
@@ -143,9 +154,11 @@
 
 	let requestStatus = $derived(checkRequest(creation.publish?.pending_r2_key));
 
-	async function memorize(
-		requestStatus: Promise<'pending' | 'approved' | 'denied' | undefined>
-	): Promise<'pending' | 'approved' | 'denied' | undefined> {
+	/**
+	 * @param {Promise<'pending' | 'approved' | 'denied' | undefined>} requestStatus
+	 * @returns {Promise<'pending' | 'approved' | 'denied' | undefined>}
+	 */
+	async function memorize(requestStatus) {
 		return (await rememberStatus) || (await requestStatus);
 	}
 
@@ -210,7 +223,7 @@
 				<Subject bind:tags={subjects} />
 				<Grade bind:tags={grades} />
 				<div>
-					<SelectTime options={[...availableLanguageTags]} bind:selected={lang} {map}>
+					<SelectTime options={[...locales]} bind:selected={lang} {map}>
 						<Icon src="$lib/assets/language.svg" alt={m.language()} size="1em" />
 					</SelectTime>
 				</div>

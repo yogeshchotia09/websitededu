@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { playJsonString } from '$lib';
@@ -9,20 +9,18 @@
 	import Textarea from '$lib/Textarea.svelte';
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import { getAllCreations, loadDatabase } from '$lib/storage';
-	import type { PageData } from './$types';
 	import { toSorted } from '$lib/util';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data } = $props();
 
 	let loading = $state(false);
 	let fuizConfig = $state('');
 	let errorMessage = $state('');
 
-	function reset(error: string) {
+	/**
+	 * @param {string} error
+	 */
+	function reset(error) {
 		errorMessage = error;
 		loading = false;
 	}
@@ -56,7 +54,7 @@
 				</ul>
 			{:else}
 				<div>
-					<FancyAnchorButton href={'/create'}>
+					<FancyAnchorButton href="/create">
 						<div class="create">{m.create()}</div>
 					</FancyAnchorButton>
 				</div>

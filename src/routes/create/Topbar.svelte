@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { goto } from '$app/navigation';
@@ -6,25 +6,28 @@
 	import IconButton from '$lib/IconButton.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import Textfield from '$lib/Textfield.svelte';
-	import { getCreation, type Database } from '$lib/storage';
+	import { getCreation } from '$lib/storage';
 	import { onMount } from 'svelte';
-	import tippy, { type Instance } from 'tippy.js';
+	import tippy from 'tippy.js';
 
-	interface Props {
-		title: string;
-		id: number;
-		db: Database;
-		errorMessage: string | undefined;
-		onshare: (instance: Instance) => void;
-	}
+	/** @type {{
+	 * title: string;
+	 * id: number;
+	 * db: import('$lib/storage').Database;
+	 * errorMessage: string | undefined;
+	 * onshare: (instance: import('tippy.js').Instance) => void;
+	 * }} */
+	let { title = $bindable(), id, db, errorMessage, onshare } = $props();
 
-	let { title = $bindable(), id, db, errorMessage, onshare }: Props = $props();
+	/** @type {HTMLElement | undefined} */
+	let shareButton = $state();
+	/** @type {import('tippy.js').Instance | undefined} */
+	let shareTippyInstance = $state();
 
-	let shareButton: HTMLElement | undefined = $state();
-	let shareTippyInstance: Instance | undefined = $state();
-
-	let playButton: HTMLElement | undefined = $state();
-	let playTippyInstance: Instance | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let playButton = $state();
+	/** @type {import('tippy.js').Instance | undefined} */
+	let playTippyInstance = $state();
 
 	onMount(() => {
 		if (!shareButton) return;
@@ -56,6 +59,16 @@
 
 		playTippyInstance.show();
 	}
+
+	/**
+	 * @param {import('$lib/storage').CreationId} id
+	 */
+	async function onDownload(id) {
+		const creation = await getCreation(id, db);
+		if (!creation) return;
+		const configJson = creation.config;
+		await downloadFuiz(configJson);
+	}
 </script>
 
 <div
@@ -69,7 +82,7 @@
 	style:justify-content="center"
 >
 	<a
-		href={'/create'}
+		href="/create"
 		style:height="65px"
 		style:margin="0 5px"
 		style:overflow="hidden"
@@ -123,12 +136,7 @@
 				size="1em"
 				src="$lib/assets/download.svg"
 				alt={m.download()}
-				onclick={async () => {
-					const creation = await getCreation(id, db);
-					if (!creation) return;
-					const configJson = creation.config;
-					await downloadFuiz(configJson);
-				}}
+				onclick={() => onDownload(id)}
 			/>
 			<div bind:this={playButton}>
 				<IconButton
@@ -136,7 +144,7 @@
 					src="$lib/assets/slideshow.svg"
 					alt={m.host()}
 					disabled={errorMessage != undefined}
-					onclick={async () => await goto('host?id=' + id)}
+					onclick={() => goto('host?id=' + id)}
 					onmouseenter={() => onmouseenter()}
 					onfocus={() => onmouseenter()}
 				/>

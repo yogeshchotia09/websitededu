@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { goto } from '$app/navigation';
@@ -51,9 +51,9 @@
 			<Header />
 		</header>
 		<form
-			onsubmit={async (e) => {
+			onsubmit={(e) => {
 				e.preventDefault();
-				await submit();
+				submit();
 			}}
 		>
 			<div

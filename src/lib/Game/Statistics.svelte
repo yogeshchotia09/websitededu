@@ -1,12 +1,9 @@
-<script lang="ts">
+<script>
 	import { buttonColors, buttonSymbols } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 
-	interface Props {
-		statistics?: { count: number; correct: boolean }[];
-	}
-
-	let { statistics = [] }: Props = $props();
+	/** @type {{ statistics?: { count: number; correct: boolean }[] }}*/
+	let { statistics = [] } = $props();
 
 	let maximum = $derived(statistics.reduce((a, b) => (a > b.count ? a : b.count), 0));
 </script>

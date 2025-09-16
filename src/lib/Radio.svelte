@@ -1,12 +1,20 @@
-<script lang="ts">
-	interface Props {
-		options: { value: string; label: string }[];
-		label: string;
-		value: string;
-		onchange?: (value: string) => void;
-	}
+<script>
+	/** @type {{
+	 * options: { value: string; label: string }[];
+	 * label: string;
+	 * value: string;
+	 * onchange?: (value: string) => void;
+	}}*/
+	let { options, label, value = $bindable(), onchange } = $props();
 
-	let { options, label, value = $bindable(), onchange }: Props = $props();
+	/** @type {import('svelte/elements').ChangeEventHandler<HTMLInputElement>} */
+	const onChange = (e) => {
+		/** @type {HTMLInputElement | undefined} */
+		// @ts-ignore
+		const target = e?.target;
+		value = target?.value ?? value;
+		onchange?.(value);
+	};
 </script>
 
 <div class="radio-group">
@@ -16,10 +24,7 @@
 				type="radio"
 				name={label}
 				checked={value === option.value}
-				onchange={(e) => {
-					value = (e?.target as HTMLInputElement | undefined)?.value ?? value;
-					onchange?.(value);
-				}}
+				onchange={onChange}
 				value={option.value}
 			/>
 			{option.label}

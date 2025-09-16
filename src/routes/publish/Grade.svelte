@@ -1,14 +1,12 @@
-<script lang="ts">
+<script>
 	import RegularCheckbox from '$lib/regular-checkbox.svelte';
 	import { grades } from '$lib/types';
 
-	interface Props {
-		tags: string[];
-	}
+	/** @type {{tags: string[];}} */
+	let { tags = $bindable() } = $props();
 
-	let { tags = $bindable() }: Props = $props();
-
-	let selectedOptions: [string, boolean][] = $state(grades.map((o) => [o, false]));
+	/** @type {[string, boolean][]} */
+	let selectedOptions = $state(grades.map((o) => [o, false]));
 
 	$effect.pre(() => {
 		tags = selectedOptions.filter(([, selected]) => selected).map(([option]) => option);

@@ -1,17 +1,16 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import FancyButton from '../FancyButton.svelte';
 
-	interface Props {
-		text: string;
-		topShadow?: boolean;
-		showNext?: boolean;
-		heading?: boolean;
-		onnext?: () => void;
-	}
-
-	let { text, topShadow = false, showNext = false, heading = false, onnext }: Props = $props();
+	/** @type {{
+	 * text: string;
+	 * topShadow?: boolean;
+	 * showNext?: boolean;
+	 * heading?: boolean;
+	 * onnext?: () => void;
+	}}*/
+	let { text, topShadow = false, showNext = false, heading = false, onnext } = $props();
 </script>
 
 <div

@@ -1,14 +1,10 @@
-<script lang="ts">
+<script>
 	import { buttonColors, buttonSymbols } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 	import FancyButton from '../FancyButton.svelte';
 
-	interface Props {
-		index: number;
-		onclick?: () => void;
-	}
-
-	let { index, onclick }: Props = $props();
+	/** @type {{index: number, onclick?: () => void}} */
+	let { index, onclick } = $props();
 </script>
 
 <div>

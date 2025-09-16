@@ -1,11 +1,9 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
-	import type { DndEvent } from 'svelte-dnd-action';
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import MediaDisplay from '$lib/MediaDisplay.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
-	import type { Media } from '$lib/types';
 	import downArrow from '$lib/assets/arrow-down.svg';
 	import Topbar from './Topbar.svelte';
 	import TextAnswerButton from '$lib/Game/TextAnswerButton.svelte';
@@ -13,27 +11,31 @@
 	import { dndzone } from 'svelte-dnd-action';
 	import { flip } from 'svelte/animate';
 
-	interface Props {
-		questionText: string;
-		name: string;
-		score: number;
-		media: undefined | Media;
-		axisLabels: { from?: string; to?: string };
-		showAnswers: boolean;
-		answers: string[];
-		onanswer: (answer: string[]) => void;
-	}
-
-	let { questionText, name, score, media, axisLabels, showAnswers, answers, onanswer }: Props =
-		$props();
+	/** @type {{
+	 * questionText: string;
+	 * name: string;
+	 * score: number;
+	 * media: undefined | import('$lib/types').Media;
+	 * axisLabels: { from?: string; to?: string };
+	 * showAnswers: boolean;
+	 * answers: string[];
+	 * onanswer: (answer: string[]) => void;
+	}} */
+	let { questionText, name, score, media, axisLabels, showAnswers, answers, onanswer } = $props();
 
 	let answersIndexed = $state(answers.map((answer, index) => ({ answer, id: index })));
 
-	function handleConsider(e: CustomEvent<DndEvent<{ answer: string; id: number }>>) {
+	/**
+	 * @param {CustomEvent<import('svelte-dnd-action').DndEvent<{ answer: string; id: number }>>} e
+	 */
+	function handleConsider(e) {
 		answersIndexed = e.detail.items;
 	}
 
-	function handleFinalize(e: CustomEvent<DndEvent<{ answer: string; id: number }>>) {
+	/**
+	 * @param {CustomEvent<import('svelte-dnd-action').DndEvent<{ answer: string; id: number }>>} e
+	 */
+	function handleFinalize(e) {
 		answersIndexed = e.detail.items;
 	}
 </script>

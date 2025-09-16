@@ -1,24 +1,23 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { backOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
-	interface Props {
-		players: [string, boolean][];
-		selectable?: boolean;
-		max?: undefined | number;
-		exactCount: number;
-		onchoose?: (players: string[]) => void;
-	}
-
+	/** @type {{
+	 * players: [string, boolean][];
+	 * selectable?: boolean;
+	 * max?: undefined | number;
+	 * exactCount: number;
+	 * onchoose?: (players: string[]) => void;
+	}}*/
 	let {
 		players = $bindable(),
 		selectable = false,
 		max = undefined,
 		exactCount,
 		onchoose
-	}: Props = $props();
+	} = $props();
 </script>
 
 {#each players as [player, selected], index (player)}

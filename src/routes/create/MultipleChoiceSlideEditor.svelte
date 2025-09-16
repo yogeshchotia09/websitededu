@@ -1,17 +1,13 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { limits } from '$lib';
 	import Textarea from '$lib/Textarea.svelte';
 	import Answers from './Answers.svelte';
 	import MediaChooser from './MediaChooser.svelte';
-	import type { MultipleChoiceSlide } from '$lib/types';
 
-	interface Props {
-		slide: MultipleChoiceSlide;
-	}
-
-	let { slide = $bindable() }: Props = $props();
+	/** @type {{slide: import('$lib/types').MultipleChoiceSlide;}} */
+	let { slide = $bindable() } = $props();
 
 	if (slide.time_limit < 1000) slide.time_limit *= 1000;
 	if (slide.introduce_question < 1000) slide.introduce_question *= 1000;

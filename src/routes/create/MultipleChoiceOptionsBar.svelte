@@ -1,16 +1,12 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { limits } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 	import SelectTime from '$lib/SelectTime.svelte';
-	import type { MultipleChoiceSlide } from '$lib/types';
 
-	interface Props {
-		activeSlide: MultipleChoiceSlide;
-	}
-
-	let { activeSlide = $bindable() }: Props = $props();
+	/** @type {{activeSlide: import('$lib/types').MultipleChoiceSlide;}} */
+	let { activeSlide = $bindable() } = $props();
 </script>
 
 <div id="sidebar-container">

@@ -1,11 +1,6 @@
-<script lang="ts">
-	interface Props {
-		value: number;
-		duration: number;
-		delay: number;
-	}
-
-	let { value, duration, delay }: Props = $props();
+<script>
+	/** @type {{ value: number; duration: number; delay: number; }}*/
+	let { value, duration, delay } = $props();
 </script>
 
 <div style:--num={value} style:--duration="{duration}ms" style:--delay="{delay}ms"></div>

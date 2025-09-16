@@ -1,13 +1,6 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
-	import type {
-		AnswerResult,
-		TextOrMedia,
-		Media,
-		IdlessFuizConfig,
-		ServerPossiblyHidden
-	} from '$lib/types';
 	import { untrack } from 'svelte';
 	import ChooseName from './ChooseName.svelte';
 	import WaitingMobile from './WaitingMobile.svelte';
@@ -27,271 +20,20 @@
 	import TypeAnswerQuestion from './TypeAnswerQuestion.svelte';
 	import OrderAnswers from './OrderAnswers.svelte';
 
-	type GameState =
-		| {
-				WaitingScreen: {
-					exact_count: number;
-				};
-		  }
-		| {
-				FindTeam: string;
-		  }
-		| {
-				ChooseTeammates: {
-					max_selection: number;
-					available: [string, boolean][];
-				};
-		  }
-		| {
-				NameChoose: {
-					sending: boolean;
-					error: string;
-				};
-		  }
-		| {
-				Summary: {
-					score?: {
-						points: number;
-						position: number;
-					};
-					points: [number];
-					config: IdlessFuizConfig;
-				};
-		  };
+	/** @type {import('./index').State | undefined} */
+	let currentState = $state(undefined);
 
-	type SlideState =
-		| {
-				MultipleChoice: 'QuestionAnnouncement' | 'AnswersAnnouncement' | 'AnswersResults';
+	/** @type {WebSocket} */
+	let socket;
 
-				question?: string;
-				media?: Media;
-				answers?: (TextOrMedia | undefined)[];
-				results?: AnswerResult[];
-				answered?: number;
-		  }
-		| {
-				TypeAnswer: 'QuestionAnnouncement' | 'AnswersResults';
+	/** @type {string | undefined} */
+	let setName = $state(undefined);
 
-				question?: string;
-				media?: Media;
-				answers?: string[];
-				results?: [string, number][];
-				answered?: string;
-				accept_answers?: boolean;
-				case_sensitive?: boolean;
-		  }
-		| {
-				Order: 'QuestionAnnouncement' | 'AnswersAnnouncement' | 'AnswersResults';
+	/** @type {number | undefined} */
+	let points = $state(undefined);
 
-				question?: string;
-				media?: Media;
-				answers?: string[];
-				results?: [number, number];
-				axis_labels?: {
-					from?: string;
-					to?: string;
-				};
-				answered?: string[];
-		  }
-		| {
-				Score: {
-					points: number;
-					position: number | undefined;
-				};
-		  };
-
-	type State =
-		| {
-				Game: GameState;
-		  }
-		| {
-				index: number;
-				count: number;
-				score: number;
-				Slide: SlideState;
-		  }
-		| {
-				Error: string;
-		  };
-
-	type NamesError = 'Used' | 'Assigned' | 'Empty' | 'Sinful' | 'TooLong';
-
-	type GameIncomingMessage =
-		| { IdAssign: string }
-		| {
-				WaitingScreen: {
-					exact_count: number;
-				};
-		  }
-		| {
-				FindTeam: string;
-		  }
-		| {
-				ChooseTeammates: {
-					max_selection: number;
-					available: [string, boolean][];
-				};
-		  }
-		| {
-				Score: {
-					index?: number;
-					count?: number;
-					score?: {
-						points: number;
-						position: number;
-					};
-				};
-		  }
-		| 'NameChoose'
-		| {
-				NameAssign: string;
-		  }
-		| {
-				NameError: NamesError;
-		  }
-		| {
-				Metainfo: {
-					Player: {
-						score: number;
-						show_answers: boolean;
-					};
-				};
-		  }
-		| {
-				Summary: {
-					Player: {
-						score?: {
-							points: number;
-							position: number;
-						};
-						points: [number];
-						config: IdlessFuizConfig;
-					};
-				};
-		  };
-
-	type MultipleChoiceIncomingMessage =
-		| {
-				QuestionAnnouncement: {
-					index: number;
-					count: number;
-					question: string;
-					media?: Media;
-					duration: number;
-				};
-		  }
-		| {
-				AnswersAnnouncement: {
-					index?: number;
-					count?: number;
-					question?: string;
-					media?: Media;
-					answers: Array<ServerPossiblyHidden<TextOrMedia>>;
-					answered_count?: number;
-					duration: number;
-				};
-		  }
-		| {
-				AnswersResults: {
-					index?: number;
-					count?: number;
-					question?: string;
-					media?: Media;
-					answers: Array<TextOrMedia>;
-					results: Array<AnswerResult>;
-				};
-		  };
-
-	type TypeAnswerIncomingMessage =
-		| {
-				QuestionAnnouncement: {
-					index: number;
-					count: number;
-					question: string;
-					media?: Media;
-					duration: number;
-					accept_answers: boolean;
-				};
-		  }
-		| {
-				AnswersResults: {
-					index?: number;
-					count?: number;
-					question?: string;
-					media?: Media;
-					answers: string[];
-					results: [string, number][];
-					case_sensitive: boolean;
-				};
-		  };
-
-	type OrderSlideIncomingMessage =
-		| {
-				QuestionAnnouncement: {
-					index: number;
-					count: number;
-					question: string;
-					media?: Media;
-					duration: number;
-				};
-		  }
-		| {
-				AnswersAnnouncement: {
-					index?: number;
-					count?: number;
-					question?: string;
-					media?: Media;
-					answers: Array<string>;
-					axis_labels: {
-						from?: string;
-						to?: string;
-					};
-					answered_count?: number;
-					duration: number;
-				};
-		  }
-		| {
-				AnswersResults: {
-					index?: number;
-					count?: number;
-					question?: string;
-					media?: Media;
-					axis_labels?: {
-						from?: string;
-						to?: string;
-					};
-					answers: Array<string>;
-					results: [number, number];
-				};
-		  };
-
-	type IncomingMessage =
-		| {
-				Game: GameIncomingMessage;
-		  }
-		| {
-				MultipleChoice: MultipleChoiceIncomingMessage;
-		  }
-		| {
-				TypeAnswer: TypeAnswerIncomingMessage;
-		  }
-		| {
-				Order: OrderSlideIncomingMessage;
-		  };
-
-	let currentState: State | undefined = $state(undefined);
-
-	let socket: WebSocket;
-
-	let setName: string | undefined = $state(undefined);
-
-	let points: number | undefined = undefined;
-
-	interface Props {
-		code: string;
-	}
-
-	let { code }: Props = $props();
+	/** @type {{code: string;}} */
+	let { code } = $props();
 
 	let finished = false;
 
@@ -301,13 +43,15 @@
 
 	let watcherId = (browser && localStorage.getItem(code + '_play')) || undefined;
 
-	function connectServer(code: string) {
+	/** @param {string} code */
+	function connectServer(code) {
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code + '/' + (watcherId ?? 'none'));
 		setName = undefined;
 
 		// // Listen for messages
 		socket.addEventListener('message', (event) => {
-			let newMsg: IncomingMessage = JSON.parse(event.data);
+			/** @type {import('./index').IncomingMessage} */
+			let newMsg = JSON.parse(event.data);
 
 			let {
 				index: previousIndex = 0,
@@ -647,7 +391,8 @@
 
 	let name = $derived((leaderboardName ? leaderboardName + ' - ' : '') + setName || m.you());
 
-	function requestName(name: string) {
+	/** @param {string} name */
+	function requestName(name) {
 		currentState = {
 			Game: {
 				NameChoose: {
@@ -659,7 +404,8 @@
 		socket.send(JSON.stringify({ Unassigned: { NameRequest: name } }));
 	}
 
-	function sendAnswer(index: number) {
+	/** @param {number} index */
+	function sendAnswer(index) {
 		if (currentState && 'Slide' in currentState && 'MultipleChoice' in currentState.Slide) {
 			currentState = {
 				...currentState,
@@ -673,7 +419,8 @@
 		socket.send(JSON.stringify({ Player: { IndexAnswer: index } }));
 	}
 
-	function sendStringAnswer(text: string) {
+	/** @param {string} text */
+	function sendStringAnswer(text) {
 		if (currentState && 'Slide' in currentState && 'TypeAnswer' in currentState.Slide) {
 			currentState = {
 				...currentState,
@@ -687,7 +434,8 @@
 		socket.send(JSON.stringify({ Player: { StringAnswer: text } }));
 	}
 
-	function sendStringArrayAnswer(texts: string[]) {
+	/** @param {string[]} texts */
+	function sendStringArrayAnswer(texts) {
 		if (currentState && 'Slide' in currentState && 'Order' in currentState.Slide) {
 			currentState = {
 				...currentState,
@@ -701,7 +449,8 @@
 		socket.send(JSON.stringify({ Player: { StringArrayAnswer: texts } }));
 	}
 
-	function sendChooseTeammate(names: string[]) {
+	/** @param {string[]} names */
+	function sendChooseTeammate(names) {
 		socket.send(JSON.stringify({ Player: { ChooseTeammates: names } }));
 	}
 </script>

@@ -1,4 +1,4 @@
-import type { AvailableLanguageTag } from '$lib/paraglide/runtime.js';
+import type { Locale } from '$lib/paraglide/runtime.js';
 
 export type Image =
 	| {
@@ -355,7 +355,7 @@ export type PublishedFuiz = Modify<
 		subjects: string[];
 		grades: string[];
 		published_at: Date;
-		language: AvailableLanguageTag;
+		language: Locale;
 	}
 >;
 

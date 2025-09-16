@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import image from '$lib/assets/image.svg';
 	import Icon from './Icon.svelte';
 </script>

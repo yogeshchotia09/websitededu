@@ -1,16 +1,11 @@
-<script lang="ts">
+<script>
 	import FancyButton from './FancyButton.svelte';
 
-	interface Props {
-		options: string[] | number[];
-		selected: string | number;
-		map?: (a: string) => string;
-		children?: import('svelte').Snippet;
-	}
+	/** @type {{options: string[] | number[];selected: string | number;map?: (a: string) => string;children?: import('svelte').Snippet;}} */
+	let { options, selected = $bindable(), map = (a) => a, children } = $props();
 
-	let { options, selected = $bindable(), map = (a) => a, children }: Props = $props();
-
-	let dialog: HTMLDialogElement | undefined = $state();
+	/** @type {HTMLDialogElement | undefined} */
+	let dialog = $state();
 </script>
 
 <FancyButton onclick={() => dialog?.showModal()}>

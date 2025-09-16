@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { buttonColors, buttonSymbols } from '$lib';
@@ -7,14 +7,8 @@
 	import FancyButton from '../FancyButton.svelte';
 	import Icon from '$lib/Icon.svelte';
 
-	interface Props {
-		index: number;
-		answerText: string;
-		correct: boolean | undefined;
-		onclick?: () => void;
-	}
-
-	let { index, answerText, correct, onclick }: Props = $props();
+	/** @type {{index: number, answerText: string, correct: (boolean|undefined), onclick?: () => void}} */
+	let { index, answerText, correct, onclick } = $props();
 </script>
 
 <div style:opacity={correct === false ? '50%' : '100%'}>

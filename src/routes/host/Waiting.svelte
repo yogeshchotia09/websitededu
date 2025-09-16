@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 	import { PUBLIC_DISPLAY_PLAY_URL, PUBLIC_PLAY_URL } from '$env/static/public';
 	import FancyButton from '$lib/FancyButton.svelte';
@@ -13,40 +13,33 @@
 	import locked from '$lib/assets/locked.svg';
 	import QrCode from '$lib/Game/QRCode.svelte';
 	import { onMount } from 'svelte';
-	import type { BindableGameInfo } from './+page';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import ExitFuiz from './ExitFuiz.svelte';
 	import tippy from 'tippy.js';
-	import { i18n } from '$lib/i18n';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
-	interface Props {
-		code: string;
-		players: string[];
-		exact_count: number;
-		bindableGameInfo: BindableGameInfo;
-		onnext?: () => void;
-		onlock?: (locked: boolean) => void;
-	}
+	/** @type {{
+	 * code: string;
+	 * players: string[];
+	 * exact_count: number;
+	 * bindableGameInfo: import('./+page').BindableGameInfo;
+	 * onnext?: () => void;
+	 * onlock?: (locked: boolean) => void;
+	}}*/
+	let { code, players, exact_count, bindableGameInfo = $bindable(), onnext, onlock } = $props();
 
-	let {
-		code,
-		players,
-		exact_count,
-		bindableGameInfo = $bindable(),
-		onnext,
-		onlock
-	}: Props = $props();
-
-	let actualUrl = $derived(PUBLIC_PLAY_URL + i18n.resolveRoute('/play?code=' + code));
+	let actualUrl = $derived(PUBLIC_PLAY_URL + localizeHref('/play?code=' + code));
 
 	function copy_url_to_clipboard() {
 		navigator.clipboard.writeText(actualUrl);
 	}
 
-	let fullscreenElement: HTMLElement | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let fullscreenElement = $state();
 
-	let copyUrlButton: HTMLButtonElement | undefined = $state();
+	/** @type {HTMLButtonElement | undefined} */
+	let copyUrlButton = $state();
 
 	onMount(() => {
 		if (!copyUrlButton) return;
@@ -81,7 +74,7 @@
 			<div style:padding="0.4em">
 				<div>{m.join_at()}</div>
 				<div style:font-weight="bold">
-					{PUBLIC_DISPLAY_PLAY_URL}{i18n.resolveRoute('/play')}
+					{PUBLIC_DISPLAY_PLAY_URL}{localizeHref('/play')}
 				</div>
 			</div>
 		</div>

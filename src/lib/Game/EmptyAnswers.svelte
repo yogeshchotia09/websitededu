@@ -1,12 +1,8 @@
-<script lang="ts">
+<script>
 	import EmptyAnswerButton from './EmptyAnswerButton.svelte';
 
-	interface Props {
-		indices: number[];
-		onanswer?: (index: number) => void;
-	}
-
-	let { indices, onanswer }: Props = $props();
+	/** @type {{indices: number[];onanswer?: (index: number) => void;}} */
+	let { indices, onanswer } = $props();
 </script>
 
 <div

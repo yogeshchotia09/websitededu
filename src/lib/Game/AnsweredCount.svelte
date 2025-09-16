@@ -1,14 +1,11 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import Icon from '$lib/Icon.svelte';
 	import assignmentTurned from '$lib/assets/answer_turned.svg';
 
-	interface Props {
-		answeredCount: number;
-	}
-
-	let { answeredCount }: Props = $props();
+	/** @type {{answeredCount: number}} */
+	let { answeredCount } = $props();
 </script>
 
 <div

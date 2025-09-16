@@ -1,20 +1,12 @@
-<script lang="ts">
+<script>
 	import { medalColors } from '$lib';
 	import Counter from '$lib/Counter.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import medal from '$lib/assets/medal.svg';
 	import { scale } from 'svelte/transition';
 
-	interface Props {
-		name: string;
-		score: number;
-		index: number;
-		final: boolean;
-		duration: number;
-		delay: number;
-	}
-
-	let { name, score, index, final, duration, delay }: Props = $props();
+	/** @type {{name: string;score: number;index: number;final: boolean;duration: number;delay: number;}} */
+	let { name, score, index, final, duration, delay } = $props();
 </script>
 
 <div id="container" style:display="flex" style:align-items="start" style:gap="0.2em">

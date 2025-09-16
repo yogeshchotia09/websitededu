@@ -1,16 +1,11 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 
-	interface Props {
-		name: string;
-		gameCode: string;
-		teamName: string;
-	}
-
-	let { name, gameCode, teamName }: Props = $props();
+	/** @type {{name: string;gameCode: string;teamName: string;}} */
+	let { name, gameCode, teamName } = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">

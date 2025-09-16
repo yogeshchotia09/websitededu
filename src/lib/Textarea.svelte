@@ -1,14 +1,5 @@
-<script lang="ts">
-	interface Props {
-		id: string;
-		placeholder: string;
-		required: boolean;
-		disabled: boolean;
-		value: string;
-		maxHeight?: string;
-		maxLength?: number | undefined;
-	}
-
+<script>
+	/** @type {{id: string;placeholder: string;required: boolean;disabled: boolean;value: string;maxHeight?: string;maxLength?: number | undefined;}} */
 	let {
 		id,
 		placeholder,
@@ -17,9 +8,10 @@
 		value = $bindable(),
 		maxHeight = '4em',
 		maxLength = undefined
-	}: Props = $props();
+	} = $props();
 
-	let editableElement: HTMLTextAreaElement | undefined = $state();
+	/** @type {HTMLTextAreaElement | undefined} */
+	let editableElement = $state();
 
 	$effect(() => {
 		value = value;
@@ -27,6 +19,15 @@
 		editableElement.style.height = '0';
 		editableElement.style.height = (editableElement.scrollHeight + 4).toString() + 'px';
 	});
+
+	/** @type {import('svelte/elements').FormEventHandler<HTMLTextAreaElement>} */
+	const onInput = (e) => {
+		/** @type {HTMLTextAreaElement | null} */
+		// @ts-ignore
+		const target = e?.target ?? null;
+		const inputtedValue = target?.value;
+		value = inputtedValue?.replaceAll('\n', '').replaceAll('\r', '') ?? value;
+	};
 </script>
 
 <div style:position="relative">
@@ -37,11 +38,7 @@
 		name={id}
 		{required}
 		{disabled}
-		oninput={(e) => {
-			const target: EventTarget | undefined = e?.target ?? undefined;
-			const inputtedValue = (target as HTMLTextAreaElement | null)?.value;
-			value = inputtedValue?.replaceAll('\n', '').replaceAll('\r', '') ?? value;
-		}}
+		oninput={onInput}
 		{value}
 		placeholder=""
 		maxlength={maxLength}

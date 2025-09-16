@@ -1,10 +1,6 @@
-<script lang="ts">
-	interface Props {
-		href: string;
-		children?: import('svelte').Snippet;
-	}
-
-	let { href, children }: Props = $props();
+<script>
+	/** @type {{href: string, children?: import('svelte').Snippet}}*/
+	let { href, children } = $props();
 </script>
 
 <a {href} target="_blank">

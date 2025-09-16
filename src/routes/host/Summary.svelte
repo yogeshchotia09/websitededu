@@ -1,26 +1,24 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { assertUnreachable, playIdlessConfig } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Icon from '$lib/Icon.svelte';
-	import type { FuizOptions, IdlessFuizConfig } from '$lib/types';
 	import TypicalPage from '$lib/TypicalPage.svelte';
 
-	interface Props {
-		stats: [number, number][];
-		player_count: number;
-		config: IdlessFuizConfig;
-		options: FuizOptions;
-	}
-
-	let { stats, player_count, config, options }: Props = $props();
+	/** @type {{
+	 * stats: [number, number][];
+	 * player_count: number;
+	 * config: import('$lib/types').IdlessFuizConfig;
+	 * options: import('$lib/types').FuizOptions;
+	}}*/
+	let { stats, player_count, config, options } = $props();
 </script>
 
 <TypicalPage>
 	<div id="summary">
 		<div>
-			<FancyButton onclick={async () => await playIdlessConfig(config, options)}>
+			<FancyButton onclick={() => playIdlessConfig(config, options)}>
 				<div style:padding="0 0.3em">{m.play_again()}</div>
 			</FancyButton>
 		</div>

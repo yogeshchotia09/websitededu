@@ -1,25 +1,23 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import Icon from '$lib/Icon.svelte';
-	import { grades, subjects, type PublishedFuiz } from '$lib/types';
+	import { grades, subjects } from '$lib/types';
 	import OnlinePublised from './OnlinePublised.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
 	import Textfield from '$lib/Textfield.svelte';
 	import { debounce } from '$lib/util';
 	import RegularCheckbox from '$lib/regular-checkbox.svelte';
-	import { availableLanguageTags } from '$lib/paraglide/runtime';
+	import { locales } from '$lib/paraglide/runtime';
 	import { untrack } from 'svelte';
 
-	interface Props {
-		recentlyPublished: PublishedFuiz[];
-	}
-
-	let { recentlyPublished }: Props = $props();
+	/** @type {{recentlyPublished: import('$lib/types').PublishedFuiz[];}} */
+	let { recentlyPublished } = $props();
 
 	let searchTerm = $state('');
 
-	let results: Promise<PublishedFuiz[] | undefined> | undefined = $state(undefined);
+	/** @type {Promise<import('$lib/types').PublishedFuiz[] | undefined> | undefined} */
+	let results = $state(undefined);
 
 	const search = debounce(
 		() =>
@@ -33,7 +31,7 @@
 					languages: languagesList
 				})
 			})
-				.then((res) => (res.ok ? (res.json() as Promise<PublishedFuiz[]>) : undefined))
+				.then((res) => (res.ok ? res.json() : undefined))
 				.catch(() => undefined)),
 		500
 	);
@@ -43,7 +41,7 @@
 	let gradesSelected = $state(grades.map((grade) => ({ name: grade, selected: false })));
 
 	let languagesSelected = $state(
-		availableLanguageTags.map((language) => ({
+		locales.map((language) => ({
 			name: language,
 			display: new Intl.DisplayNames([language], { type: 'language' }).of(language),
 			selected: false

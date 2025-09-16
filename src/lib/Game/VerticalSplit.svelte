@@ -1,10 +1,6 @@
-<script lang="ts">
-	interface Props {
-		top?: import('svelte').Snippet;
-		bottom?: import('svelte').Snippet;
-	}
-
-	let { top, bottom }: Props = $props();
+<script>
+	/** @type {{ top?: import('svelte').Snippet; bottom?: import('svelte').Snippet }}*/
+	let { top, bottom } = $props();
 </script>
 
 <div

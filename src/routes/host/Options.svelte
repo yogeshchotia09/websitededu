@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { playIdlessConfig } from '$lib';
@@ -7,26 +7,21 @@
 	import Loading from '$lib/Loading.svelte';
 	import Switch from '$lib/Switch.svelte';
 	import TypicalPage from '$lib/TypicalPage.svelte';
-	import type { IdlessFuizConfig, IdlessSlide, NameStyle } from '$lib/types';
 	import Slider from '$lib/Slider.svelte';
 	import { getCreation, loadDatabase } from '$lib/storage';
-	import type { PageData } from './$types';
 	import ErrorPage from '$lib/ErrorPage.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
 	import Radio from '$lib/Radio.svelte';
 
-	interface Props {
-		id: number;
-		data: PageData;
-	}
-
-	let { id, data }: Props = $props();
+	/** @type {{ id: import('$lib/storage').CreationId, data: import('./$types').PageData}}*/
+	let { id, data } = $props();
 
 	let loading = $state(false);
 
 	let errorMessage = $state('');
 
-	let nameStyle = $state<NameStyle | null>(null),
+	/** @type {import('$lib/types').NameStyle | null} */
+	let nameStyle = $state(null),
 		questionsOnPlayersDevices = $state(false),
 		shuffleAnswers = $state(false),
 		shuffleSlides = $state(false),
@@ -41,7 +36,13 @@
 	];
 
 	// https://stackoverflow.com/a/2450976
-	function shuffleArray<T>(array: T[]): T[] {
+	/**
+	 * Shuffles the elements of an array in place.
+	 * @template T
+	 * @param {Array<T>} array - The array to shuffle.
+	 * @returns {Array<T>} The shuffled array.
+	 */
+	function shuffleArray(array) {
 		let currentIndex = array.length,
 			randomIndex;
 
@@ -58,7 +59,12 @@
 		return array;
 	}
 
-	function conditionalShuffleAnswer(slide: IdlessSlide, shuffleAnswers: boolean): IdlessSlide {
+	/**
+	 * @param {import('$lib/types').IdlessSlide} slide
+	 * @param {boolean} shuffleAnswers
+	 * @returns {import('$lib/types').IdlessSlide}
+	 */
+	function conditionalShuffleAnswer(slide, shuffleAnswers) {
 		return {
 			...slide,
 			...('MultipleChoice' in slide && {
@@ -72,11 +78,13 @@
 		};
 	}
 
-	function shuffle(
-		config: IdlessFuizConfig,
-		shuffleSlides: boolean,
-		shuffleAnswers: boolean
-	): IdlessFuizConfig {
+	/**
+	 * @param {import('$lib/types').IdlessFuizConfig} config
+	 * @param {boolean} shuffleSlides
+	 * @param {boolean} shuffleAnswers
+	 * @returns {import('$lib/types').IdlessFuizConfig}
+	 */
+	function shuffle(config, shuffleSlides, shuffleAnswers) {
 		return {
 			...config,
 			slides: (shuffleSlides ? shuffleArray(config.slides) : config.slides).map((slide) =>

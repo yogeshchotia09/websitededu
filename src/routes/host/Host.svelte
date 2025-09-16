@@ -1,23 +1,15 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import Waiting from './Waiting.svelte';
 	import Question from './Question.svelte';
 	import QuestionAnswers from './QuestionAnswers.svelte';
 	import QuestionStatistics from './QuestionStatistics.svelte';
-	import {
-		type Media,
-		type TextOrMedia,
-		type AnswerResult,
-		type IdlessFuizConfig,
-		type FuizOptions,
-		type ServerPossiblyHidden
-	} from '$lib/types';
+
 	import Leaderboard from './Leaderboard.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_BACKEND_URL, PUBLIC_WS_URL } from '$env/static/public';
 	import ErrorPage from '$lib/ErrorPage.svelte';
-	import type { BindableGameInfo, TruncatedList } from './+page';
 	import Summary from './Summary.svelte';
 	import { bring, zip } from '$lib/util';
 	import TypeAnswerStatistics from './TypeAnswerStatistics.svelte';
@@ -25,229 +17,13 @@
 	import OrderStatistics from './OrderStatistics.svelte';
 	import { onMount, untrack } from 'svelte';
 
-	type GameState =
-		| {
-				WaitingScreen: TruncatedList<string>;
-		  }
-		| {
-				Summary: {
-					stats: [number, number][];
-					player_count: number;
-					config: IdlessFuizConfig;
-					options: FuizOptions;
-				};
-		  };
+	/** @typedef {import('./index').State} State */
 
-	type SlideState =
-		| {
-				MultipleChoice: 'QuestionAnnouncement' | 'AnswersAnnouncement' | 'AnswersResults';
+	/** @type {State | undefined} */
+	let currentState = $state(undefined);
 
-				question?: string;
-				media?: Media;
-				answers?: (TextOrMedia | undefined)[];
-				answered_count?: number;
-				results?: AnswerResult[];
-		  }
-		| {
-				TypeAnswer: 'QuestionAnnouncement' | 'AnswersResults';
-
-				question?: string;
-				media?: Media;
-				answers?: string[];
-				answered_count?: number;
-				results?: [string, number][];
-				accept_answers?: boolean;
-				case_sensitive?: boolean;
-		  }
-		| {
-				Order: 'QuestionAnnouncement' | 'AnswersAnnouncement' | 'AnswersResults';
-
-				question?: string;
-				media?: Media;
-				answers?: string[];
-				answered_count?: number;
-				results?: [number, number];
-				axis_labels?: {
-					from?: string;
-					to?: string;
-				};
-		  }
-		| {
-				Leaderboard: {
-					current: TruncatedList<[string, number]>;
-					prior: TruncatedList<[string, number]>;
-				};
-		  };
-
-	type State =
-		| {
-				Game: GameState;
-		  }
-		| {
-				index: number;
-				count: number;
-				Slide: SlideState;
-		  }
-		| {
-				Error: string;
-		  };
-
-	type GameIncomingMessage =
-		| {
-				IdAssign: string;
-		  }
-		| {
-				WaitingScreen: TruncatedList<string>;
-		  }
-		| {
-				TeamDisplay: TruncatedList<string>;
-		  }
-		| {
-				Leaderboard: {
-					index?: number;
-					count?: number;
-					leaderboard: {
-						current: TruncatedList<[string, number]>;
-						prior: TruncatedList<[string, number]>;
-					};
-				};
-		  }
-		| {
-				Metainfo: {
-					Host: {
-						locked: boolean;
-					};
-				};
-		  }
-		| {
-				Summary: {
-					Host: {
-						stats: [number, number][];
-						player_count: number;
-						config: IdlessFuizConfig;
-						options: FuizOptions;
-					};
-				};
-		  };
-
-	type MultipleChoiceIncomingMessage =
-		| {
-				QuestionAnnouncement: {
-					index: number;
-					count: number;
-					question: string;
-					media?: Media;
-					duration: number;
-				};
-		  }
-		| {
-				AnswersAnnouncement: {
-					index?: number;
-					count?: number;
-					question?: string;
-					media?: Media;
-					answers: Array<ServerPossiblyHidden<TextOrMedia>>;
-					answered_count?: number;
-					duration: number;
-				};
-		  }
-		| {
-				AnswersCount: number;
-		  }
-		| {
-				AnswersResults: {
-					index?: number;
-					count?: number;
-					question?: string;
-					media?: Media;
-					answers: Array<TextOrMedia>;
-					results: Array<AnswerResult>;
-				};
-		  };
-
-	type TypeAnswerIncomingMessage =
-		| {
-				QuestionAnnouncement: {
-					index: number;
-					count: number;
-					question: string;
-					media?: Media;
-					duration: number;
-					accept_answers: boolean;
-				};
-		  }
-		| {
-				AnswersCount: number;
-		  }
-		| {
-				AnswersResults: {
-					index?: number;
-					count?: number;
-					question?: string;
-					media?: Media;
-					answers: Array<string>;
-					results: Array<[string, number]>;
-					case_sensitive: boolean;
-				};
-		  };
-
-	type OrderSlideIncomingMessage =
-		| {
-				QuestionAnnouncement: {
-					index: number;
-					count: number;
-					question: string;
-					media?: Media;
-					duration: number;
-				};
-		  }
-		| {
-				AnswersAnnouncement: {
-					index?: number;
-					count?: number;
-					question?: string;
-					media?: Media;
-					answered_count?: number;
-					duration: number;
-					answers: string[];
-					axis_labels: {
-						from?: string;
-						to?: string;
-					};
-				};
-		  }
-		| {
-				AnswersResults: {
-					index?: number;
-					count?: number;
-					question?: string;
-					media?: Media;
-					axis_labels?: {
-						from?: string;
-						to?: string;
-					};
-					answers: string[];
-					results: [number, number];
-				};
-		  };
-
-	type IncomingMessage =
-		| {
-				Game: GameIncomingMessage;
-		  }
-		| {
-				MultipleChoice: MultipleChoiceIncomingMessage;
-		  }
-		| {
-				TypeAnswer: TypeAnswerIncomingMessage;
-		  }
-		| {
-				Order: OrderSlideIncomingMessage;
-		  };
-
-	let currentState: State | undefined = $state(undefined);
-
-	let socket: WebSocket;
+	/** @type {WebSocket} */
+	let socket;
 
 	let timer = $state(0);
 	let initialTimer = $state(0);
@@ -258,22 +34,22 @@
 		timer = Math.max(0, timer - UPDATE_DURATION);
 	}, UPDATE_DURATION);
 
-	interface Props {
-		code: string;
-	}
+	/** @type {{code: string;}} */
+	let { code } = $props();
 
-	let { code }: Props = $props();
+	/** @type {string | undefined} */
+	let watcherId = undefined;
 
-	let watcherId: string | undefined = undefined;
-
-	let bindableGameInfo: BindableGameInfo = $state({
+	/** @type {import('./+page').BindableGameInfo} */
+	let bindableGameInfo = $state({
 		volumeOn: true,
 		locked: false
 	});
 
 	let finished = false;
 
-	function connectServer(code: string) {
+	/** @param {string} code */
+	function connectServer(code) {
 		watcherId = localStorage.getItem(code + '_host') || undefined;
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code + '/' + (watcherId ?? ''));
 
@@ -286,7 +62,8 @@
 
 		// Listen for messages
 		socket.addEventListener('message', (event) => {
-			let new_msg: IncomingMessage = JSON.parse(event.data);
+			/** @type {import('./index').IncomingMessage} */
+			let new_msg = JSON.parse(event.data);
 
 			if ('Game' in new_msg) {
 				if ('WaitingScreen' in new_msg.Game) {
@@ -595,14 +372,16 @@
 		socket.send(HOST_NEXT);
 	}
 
-	function onlock(e: boolean) {
+	/** @param {boolean} e */
+	function onlock(e) {
 		socket.send(JSON.stringify({ Host: { Lock: e } }));
 	}
 
 	const HOST_NEXT = JSON.stringify({ Host: 'Next' });
 
 	onMount(() => {
-		const handleKeydown = (e: KeyboardEvent) => {
+		/** @param {KeyboardEvent} e */
+		const handleKeydown = (e) => {
 			if (e.key === 'PageDown') {
 				onnext();
 			}

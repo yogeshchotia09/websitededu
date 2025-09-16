@@ -1,13 +1,5 @@
-<script lang="ts">
-	interface Props {
-		value: string;
-		placeholder: string;
-		textAlign?: string;
-		lightText?: boolean;
-		padding?: string;
-		maxLength?: number | undefined;
-	}
-
+<script>
+	/** @type {{value: string;placeholder: string;textAlign?: string;lightText?: boolean;padding?: string;maxLength?: number | undefined;}} */
 	let {
 		value = $bindable(),
 		placeholder,
@@ -15,27 +7,33 @@
 		lightText = false,
 		padding = '5px',
 		maxLength = undefined
-	}: Props = $props();
+	} = $props();
 
 	let placeholderColor = $derived(lightText ? '#FFFFFF80' : '#00000080');
 
-	let editableElement: HTMLTextAreaElement | undefined = $state();
+	/** @type {HTMLTextAreaElement | undefined} */
+	let editableElement = $state();
 
 	$effect(() => {
 		if (!editableElement) return;
 		editableElement.style.height = '0';
 		editableElement.style.height = (editableElement.scrollHeight + 4).toString() + 'px';
 	});
+
+	/** @type {import('svelte/elements').FormEventHandler<HTMLTextAreaElement>} */
+	const onInput = (e) => {
+		/** @type {HTMLTextAreaElement | null} */
+		// @ts-ignore
+		const target = e?.target ?? null;
+		const inputtedValue = target?.value;
+		value = inputtedValue?.replaceAll('\n', '').replaceAll('\r', '') ?? value;
+	};
 </script>
 
 <textarea
 	bind:this={editableElement}
 	{value}
-	oninput={(e) => {
-		const target: EventTarget | undefined = e?.target ?? undefined;
-		const inputtedValue = (target as HTMLTextAreaElement | null)?.value;
-		value = inputtedValue?.replaceAll('\n', '').replaceAll('\r', '') ?? value;
-	}}
+	oninput={onInput}
 	style:background="none"
 	style:color="inherit"
 	style:display="flex"

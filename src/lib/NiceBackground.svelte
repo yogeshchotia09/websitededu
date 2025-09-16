@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import strawberry from '$lib/assets/fruits/strawberry.svg';
@@ -6,11 +6,7 @@
 	import kiwi from '$lib/assets/fruits/kiwi.svg';
 	import orange from '$lib/assets/fruits/orange.svg';
 
-	interface Props {
-		children?: import('svelte').Snippet;
-	}
-
-	let { children }: Props = $props();
+	let { children } = $props();
 </script>
 
 <div style:height="100%" style:position="relat ive">

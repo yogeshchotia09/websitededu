@@ -1,16 +1,12 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import waiting_penguin from '$lib/assets/waiting.svg';
 	import Topbar from './Topbar.svelte';
 
-	interface Props {
-		name: string;
-		gameCode: string;
-	}
-
-	let { name, gameCode }: Props = $props();
+	/** @type {{name: string;gameCode: string;}} */
+	let { name, gameCode } = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">

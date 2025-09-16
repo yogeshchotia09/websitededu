@@ -2,7 +2,7 @@ import { fixPublish } from '$lib/serverOnlyUtils';
 import { subjects as allSubjects, grades as allGrades, type PublishedFuizDB } from '$lib/types';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { availableLanguageTags, type AvailableLanguageTag } from '$lib/paraglide/runtime';
+import { locales, type Locale } from '$lib/paraglide/runtime';
 import { isNotNull } from '$lib/util';
 
 function restrict<T extends string>(
@@ -34,7 +34,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	const fixedTerm = `%${term}%`;
 
 	const languagesQueries = languages
-		.map<AvailableLanguageTag | null>((lang) => restrict(lang, availableLanguageTags))
+		.map<Locale | null>((lang) => restrict(lang, locales))
 		.filter(isNotNull)
 		.map((lang) => `language_code = '${lang}'`)
 		.join(' OR ');

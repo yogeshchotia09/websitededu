@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { limits } from '$lib';
@@ -9,21 +9,19 @@
 	import first from '$lib/assets/first.svg';
 	import last from '$lib/assets/last.svg';
 	import Thumbnail from './Thumbnail.svelte';
-	import { dndzone, type DndEvent } from 'svelte-dnd-action';
+	import { dndzone } from 'svelte-dnd-action';
 	import add_slide from '$lib/assets/add_slide.svg';
 	import Icon from '$lib/Icon.svelte';
 	import IconButton from '$lib/IconButton.svelte';
 	import { tick } from 'svelte';
-	import type { Slide } from '$lib/types';
 
-	interface Props {
-		slides: Slide[];
-		selectedSlideIndex: number;
-	}
+	/** @type {{slides: import('$lib/types').Slide[];selectedSlideIndex: number;}} */
+	let { slides = $bindable(), selectedSlideIndex = $bindable() } = $props();
 
-	let { slides = $bindable(), selectedSlideIndex = $bindable() }: Props = $props();
-
-	async function handleConsider(e: CustomEvent<DndEvent<Slide>>) {
+	/**
+	 * @param {CustomEvent<import('svelte-dnd-action').DndEvent<import('$lib/types').Slide>>} e
+	 */
+	async function handleConsider(e) {
 		const id = slides.at(selectedSlideIndex)?.id ?? 0;
 		slides = e.detail.items;
 		const newIndex = e.detail.items.findIndex((s) => s.id == id);
@@ -33,7 +31,10 @@
 				: newIndex;
 	}
 
-	async function handleFinalize(e: CustomEvent<DndEvent<Slide>>) {
+	/**
+	 * @param {CustomEvent<import('svelte-dnd-action').DndEvent<import('$lib/types').Slide>>} e
+	 */
+	async function handleFinalize(e) {
 		const id = slides.at(selectedSlideIndex)?.id ?? 0;
 
 		slides = e.detail.items;
@@ -45,13 +46,23 @@
 		}
 	}
 
-	let section: HTMLElement | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let section = $state();
 
-	function clamp(min: number, value: number, max: number): number {
+	/**
+	 * @param {number} min
+	 * @param {number} value
+	 * @param {number} max
+	 * @returns {number}
+	 */
+	function clamp(min, value, max) {
 		return Math.min(max, Math.max(value, min));
 	}
 
-	async function changeSelected(newValue: number) {
+	/**
+	 * @param {number} newValue
+	 */
+	async function changeSelected(newValue) {
 		if (!section) return;
 
 		const clamped = Math.min(Math.max(0, newValue), slides.length - 1);
@@ -74,7 +85,19 @@
 		});
 	}
 
-	let popoverElement: HTMLElement | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let popoverElement = $state();
+
+	/**
+	 * @param {number} index
+	 */
+	async function onDelete(index) {
+		slides.splice(index, 1);
+		if (index <= selectedSlideIndex) {
+			await changeSelected(selectedSlideIndex - 1);
+		}
+		slides = slides;
+	}
 </script>
 
 <div id="sidebar" style:display="flex" style:flex-direction="column">
@@ -113,19 +136,13 @@
 							{index}
 							selected={index === selectedSlideIndex}
 							onselect={() => changeSelected(index)}
-							ondelete={async () => {
-								slides.splice(index, 1);
-								if (index <= selectedSlideIndex) {
-									await changeSelected(selectedSlideIndex - 1);
-								}
-								slides = slides;
-							}}
-							onduplicate={async () => {
+							ondelete={() => onDelete(index)}
+							onduplicate={() => {
 								const sameSlide = structuredClone($state.snapshot(slide));
 								sameSlide.id = Date.now();
 								slides.splice(index + 1, 0, sameSlide);
 								slides = slides;
-								await changeSelected(index + 1);
+								changeSelected(index + 1);
 							}}
 						/>
 					</div>
@@ -142,7 +159,7 @@
 				style:padding="1em"
 			>
 				<FancyButton
-					onclick={async () => {
+					onclick={() => {
 						popoverElement?.hidePopover();
 						slides.push({
 							MultipleChoice: {
@@ -156,7 +173,7 @@
 							id: Date.now()
 						});
 						slides = slides;
-						await changeSelected(slides.length - 1);
+						changeSelected(slides.length - 1);
 					}}
 				>
 					<div style:padding="0.2em 0.6em">
@@ -164,7 +181,7 @@
 					</div>
 				</FancyButton>
 				<FancyButton
-					onclick={async () => {
+					onclick={() => {
 						popoverElement?.hidePopover();
 						slides.push({
 							TypeAnswer: {
@@ -178,13 +195,13 @@
 							id: Date.now()
 						});
 						slides = slides;
-						await changeSelected(slides.length - 1);
+						changeSelected(slides.length - 1);
 					}}
 				>
 					<div style:padding="0.2em 0.6em">{m.short_answer()}</div>
 				</FancyButton>
 				<FancyButton
-					onclick={async () => {
+					onclick={() => {
 						popoverElement?.hidePopover();
 						slides.push({
 							Order: {
@@ -198,7 +215,7 @@
 							id: Date.now()
 						});
 						slides = slides;
-						await changeSelected(slides.length - 1);
+						changeSelected(slides.length - 1);
 					}}
 				>
 					<div style:padding="0.2em 0.6em">{m.puzzle()}</div>
