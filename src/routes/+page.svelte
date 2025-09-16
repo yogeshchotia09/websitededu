@@ -214,7 +214,7 @@
 	<section>
 		<div class="split">
 			<div>
-				<h2><Anchor href="posts/introducing-fuiz">{m.collab_over_comp()}</Anchor></h2>
+				<h2>{m.collab_over_comp()}</h2>
 				<p>
 					{m.collab_over_comp_desc()}
 				</p>

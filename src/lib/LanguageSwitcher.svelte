@@ -1,8 +1,7 @@
 <script>
 	import * as m from '$lib/paraglide/messages.js';
 
-	import { getLocale, locales, localizeHref } from '$lib/paraglide/runtime.js';
-	import { page } from '$app/state';
+	import { locales, setLocale } from '$lib/paraglide/runtime.js';
 	import IconButton from './IconButton.svelte';
 	import { createDialog } from 'svelte-headlessui';
 
@@ -27,15 +26,11 @@
 			{#each locales as lang}
 				<li>
 					<!-- the hreflang attribute decides which language the link points to -->
-					<a
-						href={localizeHref(page.url.pathname + page.url.search)}
-						hreflang={lang}
-						aria-current={lang === getLocale() ? 'page' : undefined}
-					>
+					<button onclick={() => setLocale(lang)}>
 						{new Intl.DisplayNames([lang], {
 							type: 'language'
 						}).of(lang)}
-					</a>
+					</button>
 				</li>
 			{/each}
 		</ul>
@@ -72,8 +67,12 @@
 		white-space: nowrap;
 	}
 
-	a {
+	button {
 		color: inherit;
+		background: none;
+		border: none;
+		font: inherit;
+		cursor: pointer;
 		text-decoration: none;
 	}
 </style>
