@@ -1,27 +1,25 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
-	import type { PageData } from '../[id]/$types';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import { goto } from '$app/navigation';
 	import { addCreation, generateUuid, loadDatabase } from '$lib/storage';
 	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
 	import { assertUnreachable, buttonColors } from '$lib';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data } = $props();
 
 	let fuiz = $derived(data.fuiz);
 
 	let config = $derived(data.config);
 
-	async function addToCollection(): Promise<number> {
+	/**
+	 * @returns {Promise<number>}
+	 */
+	async function addToCollection() {
 		const db = await loadDatabase(data.session !== null);
 		const id = await addCreation(
 			{

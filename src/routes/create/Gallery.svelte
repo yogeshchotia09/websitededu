@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import GalleryCreation from './GalleryCreation.svelte';
@@ -10,37 +10,17 @@
 	import Icon from '$lib/Icon.svelte';
 	import ghost from '$lib/assets/ghost.svg';
 	import { parse } from '@ltd/j-toml';
-	import {
-		getMedia,
-		mapIdlessMedia,
-		type Creation,
-		type IdlessFuizConfig,
-		type Media
-	} from '$lib/types';
+	import { getMedia, mapIdlessMedia } from '$lib/types';
 	import { isNotUndefined, toSorted } from '$lib/util';
 	import TypicalPage from '$lib/TypicalPage.svelte';
-	import {
-		getCreation,
-		type Database,
-		deleteCreation,
-		addCreation,
-		generateUuid,
-		type CreationId
-	} from '$lib/storage';
-	import type { PageData } from './$types';
+	import { getCreation, deleteCreation, addCreation, generateUuid } from '$lib/storage';
 	import { share } from './lib';
 	import JSZip from 'jszip';
 	import { page } from '$app/state';
 	import { signIn, signOut } from '@auth/sveltekit/client';
-	import type { Instance } from 'tippy.js';
 
-	interface Props {
-		creations: Creation[];
-		db: Database;
-		data: PageData;
-	}
-
-	let { creations = $bindable(), db, data }: Props = $props();
+	/** @type {{creations: import('$lib/types').Creation[], db: import('$lib/storage').Database, data: import('./$types').PageData}}*/
+	let { creations = $bindable(), db, data } = $props();
 
 	let sortedCreations = $derived(toSorted(creations, (a, b) => b.lastEdited - a.lastEdited));
 
@@ -70,7 +50,10 @@
 		await goto(`?id=${id}`);
 	}
 
-	async function deleteSlide(id: number) {
+	/**
+	 * @param {number} id
+	 */
+	async function deleteSlide(id) {
 		await deleteCreation(id, db);
 		creations = creations.filter((c) => c.id != id);
 	}
@@ -78,14 +61,17 @@
 	const dialog = createDialog();
 	let selectedToDeletion = $state(0);
 
-	let fileInput: HTMLInputElement | undefined = $state();
+	/** @type {HTMLInputElement | undefined} */
+	let fileInput = $state();
 
 	function loadFromInput() {
 		const target = document.querySelector('input[type=file]');
 		if (!target) {
 			return;
 		}
-		const inputImage = target as HTMLInputElement;
+		/** @type {HTMLInputElement} */
+		// @ts-ignore
+		const inputImage = target;
 		const filesList = inputImage.files;
 		if (!filesList) {
 			return;
@@ -100,7 +86,10 @@
 		loadFile(files);
 	}
 
-	async function loadFile(files: File[]) {
+	/**
+	 * @param {File[]} files
+	 */
+	async function loadFile(files) {
 		const exportedFuizzesWithFailures = await Promise.all(
 			files.map(async (file) => {
 				if (file.name.endsWith('.zip')) {
@@ -128,10 +117,8 @@
 						.map((name) => archive.files[name])
 						.at(0);
 
-					const betterImages: {
-						name: string;
-						base64: string;
-					}[] = [];
+					/** @type {{name: string, base64: string}[]} */
+					const betterImages = [];
 
 					for (const { name, file } of images) {
 						const base64 =
@@ -145,9 +132,15 @@
 					if (!fuiz) return undefined;
 
 					const str = await fuiz.async('string');
-					const detomlified = parse(str, { bigint: false }) as IdlessFuizConfig;
+					/** @type {import('$lib/types').IdlessFuizConfig}*/
+					// @ts-ignore
+					const detomlified = parse(str, { bigint: false });
 
-					const unurlify = (imageUrl: string): string => {
+					/**
+					 * @param {string} imageUrl
+					 * @returns {string}
+					 */
+					const unurlify = (imageUrl) => {
 						return betterImages.find(({ name }) => name === imageUrl)?.base64 ?? '';
 					};
 
@@ -174,13 +167,15 @@
 						)
 					};
 				} else {
-					return new Promise<IdlessFuizConfig | undefined>((resolve) => {
+					return new Promise((resolve) => {
 						const reader = new FileReader();
 						reader.readAsText(file);
 						reader.addEventListener('load', () => {
 							const str = reader.result?.toString();
 							if (str) {
-								const detomlified = parse(str, { bigint: false }) as IdlessFuizConfig;
+								/** @type {import('$lib/types').IdlessFuizConfig} */
+								// @ts-ignore
+								const detomlified = parse(str, { bigint: false });
 								resolve(detomlified);
 							} else {
 								resolve(undefined);
@@ -219,24 +214,28 @@
 						lastEdited: fuiz.lastEdited,
 						title: idedConfig.title,
 						slidesCount: idedConfig.slides.length,
-						media: idedConfig.slides.reduce<Media | undefined>(
-							(p, c) => p || getMedia(c),
-							undefined
-						)
+						media: idedConfig.slides.reduce((p, c) => p || getMedia(c), undefined)
 					}
 				];
 			})
 		);
 	}
 
-	async function onDownload(id: CreationId) {
+	/**
+	 * @param {import('$lib/storage').CreationId} id
+	 */
+	async function onDownload(id) {
 		const creation = await getCreation(id, db);
 		if (!creation) return;
 		const configJson = creation.config;
 		await downloadFuiz(configJson);
 	}
 
-	async function onShare(id: CreationId, e: Instance) {
+	/**
+	 * @param {import('$lib/storage').CreationId} id
+	 * @param {import('tippy.js').Instance} e
+	 */
+	async function onShare(id, e) {
 		const creation = await getCreation(id, db);
 		if (creation) {
 			await share(creation.config, page.data.user ? creation.uniqueId : undefined);

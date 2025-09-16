@@ -1,19 +1,15 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
-	import { availableLanguageTags, getLocale } from '$lib/paraglide/runtime.js';
+	import { getLocale, locales, localizeHref } from '$lib/paraglide/runtime.js';
 	import { page } from '$app/state';
 	import IconButton from './IconButton.svelte';
 	import { createDialog } from 'svelte-headlessui';
-	import { i18n } from './i18n';
 
 	const dialog = createDialog();
 
-	interface Props {
-		up?: boolean;
-	}
-
-	let { up = false }: Props = $props();
+	/** @type {{ up?: boolean }}*/
+	let { up = false } = $props();
 </script>
 
 <div>
@@ -28,11 +24,11 @@
 
 	{#if $dialog.expanded}
 		<ul use:dialog.modal style:--y={up ? 'calc(-100% - 1.25em)' : '0'}>
-			{#each availableLanguageTags as lang}
+			{#each locales as lang}
 				<li>
 					<!-- the hreflang attribute decides which language the link points to -->
 					<a
-						href={i18n.route(page.url.pathname + page.url.search)}
+						href={localizeHref(page.url.pathname + page.url.search)}
 						hreflang={lang}
 						aria-current={lang === getLocale() ? 'page' : undefined}
 					>

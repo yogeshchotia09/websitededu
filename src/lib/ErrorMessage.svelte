@@ -1,14 +1,11 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import warning from '$lib/assets/warning.svg';
 	import Message from './Message.svelte';
 
-	interface Props {
-		errorMessage: string;
-	}
-
-	let { errorMessage }: Props = $props();
+	/** @type {{ errorMessage: string }}*/
+	let { errorMessage } = $props();
 </script>
 
 <Message

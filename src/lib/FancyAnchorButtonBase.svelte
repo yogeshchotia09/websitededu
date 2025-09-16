@@ -1,13 +1,12 @@
-<script lang="ts">
-	interface Props {
-		foregroundColor: string;
-		backgroundColor: string;
-		backgroundDeepColor: string;
-		href: string;
-		children?: import('svelte').Snippet;
-	}
-
-	let { foregroundColor, backgroundColor, backgroundDeepColor, href, children }: Props = $props();
+<script>
+	/** @type {{
+	 * foregroundColor: string;
+	 * backgroundColor: string;
+	 * backgroundDeepColor: string;
+	 * href: string;
+	 * children?: import('svelte').Snippet;
+	}}*/
+	let { foregroundColor, backgroundColor, backgroundDeepColor, href, children } = $props();
 </script>
 
 <a

@@ -1,11 +1,10 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { buttonColors, limits } from '$lib';
 	import Textarea from '$lib/Textarea.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import MediaChooser from './MediaChooser.svelte';
-	import type { OrderSlide } from '$lib/types';
 	import arrowDown from '$lib/assets/arrow-down.svg';
 	import addAnswer from '$lib/assets/add.svg';
 	import Textfield from '$lib/Textfield.svelte';
@@ -13,11 +12,8 @@
 	import deleteAnswer from '$lib/assets/delete.svg';
 	import Textbox from '$lib/Textbox.svelte';
 
-	interface Props {
-		slide: OrderSlide;
-	}
-
-	let { slide = $bindable() }: Props = $props();
+	/** @type {{slide: import('$lib/types').OrderSlide;}} */
+	let { slide = $bindable() } = $props();
 
 	if (slide.time_limit < 1000) slide.time_limit *= 1000;
 </script>

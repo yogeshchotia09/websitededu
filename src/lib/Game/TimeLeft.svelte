@@ -1,15 +1,12 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import hourglassFilled from '$lib/assets/hourglass_filled.svg';
 	import hourglassEmpty from '$lib/assets/hourglass_empty.svg';
 	import Icon from '$lib/Icon.svelte';
-	interface Props {
-		timeLeft: number;
-		timeStarted: number;
-	}
 
-	let { timeLeft, timeStarted }: Props = $props();
+	/** @type {{ timeLeft: number, timeStarted: number }} */
+	let { timeLeft, timeStarted } = $props();
 
 	const size = '1.2em';
 </script>

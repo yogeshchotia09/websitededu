@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 	import warning from '$lib/assets/error.svg';
 
@@ -11,16 +11,11 @@
 	import MainHeader from './MainHeader.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import QuestionStatistics from './host/QuestionStatistics.svelte';
-	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data = $bindable() }: Props = $props();
+	let { data = $bindable() } = $props();
 
 	const title = m.main_title();
 	const description = m.main_desc();
@@ -31,7 +26,11 @@
 		answered = (localStorage.getItem('answered') ?? '').length > 0;
 	});
 
-	async function onChooseFavoriteFeature(e: number) {
+	/**
+	 * Handle when a user chooses their favorite feature.
+	 * @param {number} e
+	 */
+	async function onChooseFavoriteFeature(e) {
 		const field = Object.keys(data.stats)[e];
 
 		let resp = await fetch('/increment', {

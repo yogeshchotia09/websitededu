@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import NiceBackground from '$lib/NiceBackground.svelte';
@@ -7,13 +7,8 @@
 	import Topbar from './Topbar.svelte';
 	import { Confetti } from 'svelte-confetti';
 
-	interface Props {
-		name: string;
-		score: number;
-		correct: boolean;
-	}
-
-	let { name, score, correct }: Props = $props();
+	/** @type {{name: string;score: number;correct: boolean;}} */
+	let { name, score, correct } = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">

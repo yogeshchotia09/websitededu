@@ -1,33 +1,28 @@
-<script lang="ts">
+<script>
 	import { onMount } from 'svelte';
-	import type { PageData } from './$types';
-	import {
-		addCreation,
-		generateUuid,
-		loadDatabase,
-		type MediaReferencedFuizConfig
-	} from '$lib/storage';
+	import { addCreation, generateUuid, loadDatabase } from '$lib/storage';
 	import { goto } from '$app/navigation';
 	import Loading from '$lib/Loading.svelte';
-	import { mapIdlessMedia, type IdlessFuizConfig } from '$lib/types';
+	import { mapIdlessMedia } from '$lib/types';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data } = $props();
 
 	onMount(async () => {
 		const db = await loadDatabase(data.session !== null);
-		const config: MediaReferencedFuizConfig = JSON.parse(data.content);
+		/** @type {import('$lib/storage').MediaReferencedFuizConfig} */
+		const config = JSON.parse(data.content);
 
-		const dereferenceImage = async (hash: string) => {
+		/**
+		 * @param {string} hash
+		 */
+		const dereferenceImage = async (hash) => {
 			const resp = await fetch('/oauth/getImage/' + hash);
 			return await resp.text();
 		};
 
-		const fuizWithoutRef: IdlessFuizConfig = {
+		/** @type {import('$lib/types').IdlessFuizConfig} */
+		const fuizWithoutRef = {
 			...config,
 			slides: await Promise.all(
 				config.slides.map(

@@ -1,22 +1,13 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import Icon from '$lib/Icon.svelte';
-	import type { IdlessFuizConfig } from '$lib/types';
 	import TypicalPage from '$lib/TypicalPage.svelte';
 
-	interface Props {
-		score:
-			| {
-					points: number;
-					position: number;
-			  }
-			| undefined;
-		points: number[];
-		config: IdlessFuizConfig;
-	}
+	/** @typedef {{points: number, position: number} | undefined} Score */
 
-	let { score, points, config }: Props = $props();
+	/** @type {{score: Score; points: number[]; config: import('$lib/types').IdlessFuizConfig;}} */
+	let { score, points, config } = $props();
 </script>
 
 <TypicalPage>

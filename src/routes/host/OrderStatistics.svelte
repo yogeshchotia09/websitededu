@@ -1,28 +1,25 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import factual from '$lib/assets/correct.svg';
-	import type { BindableGameInfo, SharedGameInfo } from './+page';
-	import type { Media } from '$lib/types';
 	import TextAnswerButton from '$lib/Game/TextAnswerButton.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import wrong from '$lib/assets/wrong.svg';
 	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
 
-	interface Props {
-		bindableGameInfo: BindableGameInfo;
-		gameInfo: SharedGameInfo;
-		questionText: string;
-		axis_labels: { from: string; to: string };
-		answers: string[];
-		results: [number, number];
-		media: Media | undefined;
-		onnext?: () => void;
-		onlock?: (locked: boolean) => void;
-	}
-
+	/** @type {{
+	 * bindableGameInfo: import('./+page').BindableGameInfo;
+	 * gameInfo: import('./+page').SharedGameInfo;
+	 * questionText: string;
+	 * axis_labels: { from: string; to: string };
+	 * answers: string[];
+	 * results: [number, number];
+	 * media: import('$lib/types').Media | undefined;
+	 * onnext?: () => void;
+	 * onlock?: (locked: boolean) => void;
+	}} */
 	let {
 		bindableGameInfo = $bindable(),
 		gameInfo,
@@ -32,9 +29,10 @@
 		results,
 		onnext,
 		onlock
-	}: Props = $props();
+	} = $props();
 
-	let fullscreenElement: HTMLElement | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let fullscreenElement = $state();
 </script>
 
 <div

@@ -1,16 +1,15 @@
-<script lang="ts">
-	interface Props {
-		foregroundColor: string;
-		backgroundColor: string;
-		backgroundDeepColor: string;
-		disabled?: boolean;
-		active?: boolean;
-		type?: 'button' | 'submit' | 'reset' | undefined;
-		height?: string | undefined;
-		children?: import('svelte').Snippet;
-		onclick?: () => void;
-	}
-
+<script>
+	/** @type {{
+	 * foregroundColor: string,
+	 * backgroundColor: string,
+	 * backgroundDeepColor: string,
+	 * disabled?: boolean,
+	 * active?: boolean,
+	 * type?: 'button' | 'submit' | 'reset' | undefined,
+	 * height?: string | undefined,
+	 * children?: import('svelte').Snippet,
+	 * onclick?: () => void
+	 * }} */
 	let {
 		foregroundColor,
 		backgroundColor,
@@ -21,7 +20,7 @@
 		height = undefined,
 		children,
 		onclick
-	}: Props = $props();
+	} = $props();
 </script>
 
 {#if active}

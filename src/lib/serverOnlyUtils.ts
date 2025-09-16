@@ -1,7 +1,7 @@
 import { bring } from './util';
 import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import { getMedia, type IdlessFuizConfig, type PublishedFuiz, type PublishedFuizDB } from './types';
-import type { AvailableLanguageTag } from '$lib/paraglide/runtime.js';
+import type { Locale } from '$lib/paraglide/runtime.js';
 
 export function dataURIToBlob(dataURI: string): Blob {
 	const [info, data] = dataURI.split(',');
@@ -78,6 +78,6 @@ export function fixPublish(p: PublishedFuizDB): PublishedFuiz {
 		subjects: p.subjects.split(' ~ '),
 		grades: p.grades.split(' ~ '),
 		published_at: new Date(p.published_at),
-		language: p.language_code as AvailableLanguageTag
+		language: p.language_code as Locale
 	};
 }

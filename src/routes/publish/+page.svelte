@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { page } from '$app/state';
@@ -10,12 +10,15 @@
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import Publish from './Publish.svelte';
 	import { getAllCreations, getCreation, loadDatabase } from '$lib/storage';
-	import type { PageData } from '../$types';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import { toSorted } from '$lib/util';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	function parseInt(str: string | null): number | null {
+	/**
+	 * @param {string | null} str
+	 * @returns {number | null}
+	 */
+	function parseInt(str) {
 		if (str === null) {
 			return null;
 		}
@@ -26,15 +29,19 @@
 		}
 	}
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data } = $props();
 
 	let id = $derived(parseInt(page.url.searchParams.get('id')));
 	const title = m.publish_title();
 	const description = m.publish_desc();
+
+	/**
+	 * @param {import('$lib/storage').Database} db
+	 * @param {number} filteredId
+	 */
+	async function joinCreation(db, filteredId) {
+		return { db, creation: await getCreation(filteredId, db) };
+	}
 </script>
 
 <svelte:head>
@@ -47,7 +54,7 @@
 
 {#if id}
 	{@const filteredId = id}
-	{#await loadDatabase(data.session !== null).then( async (db) => ({ db, creation: await getCreation(filteredId, db) }) )}
+	{#await loadDatabase(data.session !== null).then((db) => joinCreation(db, filteredId))}
 		<Loading />
 	{:then { db, creation }}
 		{#if creation}

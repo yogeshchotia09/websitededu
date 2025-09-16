@@ -1,14 +1,13 @@
-<script lang="ts">
+<script>
 	import Icon from './Icon.svelte';
 
-	interface Props {
-		message: string;
-		image: { src: string; alt: string };
-		background: string;
-		color: string;
-	}
-
-	let { message, image, background, color }: Props = $props();
+	/** @type {{
+	 *  message: string;
+	 *  image: { src: string; alt: string };
+	 *  background: string;
+	 *  color: string;
+	}} */
+	let { message, image, background, color } = $props();
 </script>
 
 {#if message}

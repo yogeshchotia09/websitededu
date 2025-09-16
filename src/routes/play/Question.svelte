@@ -1,19 +1,12 @@
-<script lang="ts">
+<script>
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
-	import type { Media } from '$lib/types';
 	import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 
-	interface Props {
-		name: string;
-		score: number;
-		questionText: string;
-		media: Media | undefined;
-	}
-
-	let { name, score, questionText, media }: Props = $props();
+	/** @type {{name: string;score: number;questionText: string;media: import('$lib/types').Media | undefined;}} */
+	let { name, score, questionText, media } = $props();
 </script>
 
 <svelte:head>

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import FancyAnchorButton from '$lib/FancyAnchorButton.svelte';
@@ -35,14 +35,6 @@
 				<div class="a">
 					<Icon size="1.2em" src="$lib/assets/library.svg" alt={m.library()} />
 					<div>{m.library()}</div>
-				</div>
-			</FancyAnchorButton>
-		</div>
-		<div>
-			<FancyAnchorButton href={'/posts'}>
-				<div class="a">
-					<Icon size="1.2em" src="$lib/assets/newspaper.svg" alt={m.blog()} />
-					<div>{m.blog()}</div>
 				</div>
 			</FancyAnchorButton>
 		</div>

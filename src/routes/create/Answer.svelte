@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { buttonColors, limits } from '$lib';
@@ -7,23 +7,15 @@
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Textbox from '$lib/Textbox.svelte';
 	import IconButton from '$lib/IconButton.svelte';
-	import type { TextOrMedia } from '$lib/types';
 
-	interface Props {
-		correct: boolean;
-		content: TextOrMedia;
-		index: number;
-		attention?: boolean;
-		onclick?: () => void;
-	}
-
+	/** @type {{correct: boolean;content: import('$lib/types').TextOrMedia;index: number;attention?: boolean;onclick?: () => void;}} */
 	let {
 		correct = $bindable(),
 		content = $bindable(),
 		index,
 		attention = false,
 		onclick
-	}: Props = $props();
+	} = $props();
 </script>
 
 <FancyButton

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { page } from '$app/state';
@@ -7,27 +7,24 @@
 	import ErrorPage from '$lib/ErrorPage.svelte';
 	import Gallery from './Gallery.svelte';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
-	import type { Creation, FuizConfig } from '$lib/types';
-	import {
-		getAllCreations,
-		getCreation,
-		type Database,
-		loadDatabase,
-		type ExportedFuiz
-	} from '$lib/storage';
+	import { getAllCreations, getCreation, loadDatabase } from '$lib/storage';
 	import { addIds } from '$lib';
-	import type { PageData } from '../$types';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	let status:
-		| 'loading'
-		| {
-				creation: 'failure' | { id: number; exportedFuiz: ExportedFuiz; config: FuizConfig };
-				db: Database;
-		  }
-		| { creations: Creation[]; db: Database } = $state('loading');
+	/** @type {
+	 * | 'loading'
+	 * | {
+	 * 		creation: 'failure' | { id: number; exportedFuiz: import('$lib/storage').ExportedFuiz; config: import('$lib/types').FuizConfig };
+	 * 		db: import('$lib/storage').Database;
+	 *   }
+	 * | { creations: import('$lib/types').Creation[]; db: import('$lib/storage').Database }
+	 * } */
+	let status = $state('loading');
 
-	async function getStatus(idParam: string | null) {
+	/**
+	 * @param {string | null} idParam
+	 */
+	async function getStatus(idParam) {
 		const db = await loadDatabase(data.session !== null);
 		if (idParam) {
 			const id = parseInt(idParam);
@@ -52,11 +49,7 @@
 		getStatus(creationId);
 	});
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data } = $props();
 
 	const title = m.create_title();
 	const description = m.create_desc();

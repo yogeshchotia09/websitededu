@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
@@ -10,13 +10,8 @@
 	import Textfield from '$lib/Textfield.svelte';
 
 	let placeholder = m.nickname();
-	interface Props {
-		sending: boolean;
-		errorMessage?: string;
-		setName: (name: string) => void;
-	}
-
-	let { sending, errorMessage = '', setName }: Props = $props();
+	/** @type {{sending: boolean;errorMessage?: string;setName: (name: string) => void;}} */
+	let { sending, errorMessage = '', setName } = $props();
 	let name = $state('');
 
 	function submit() {

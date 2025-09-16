@@ -1,11 +1,14 @@
-<script lang="ts">
+<script>
 	import { page } from '$app/state';
-	import type { PageData } from '../$types';
 	import Create from './Create.svelte';
 	import Host from './Host.svelte';
 	import Options from './Options.svelte';
 
-	function parseInt(str: string | null): number | null {
+	/**
+	 * @param {string | null} str
+	 * @returns {number | null}
+	 */
+	function parseInt(str) {
 		if (str === null) {
 			return null;
 		}
@@ -16,11 +19,7 @@
 		}
 	}
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data } = $props();
 
 	let code = $derived(page.url.searchParams.get('code'));
 	let id = $derived(parseInt(page.url.searchParams.get('id')));

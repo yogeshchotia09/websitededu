@@ -1,11 +1,6 @@
-<script lang="ts">
-	interface Props {
-		src: string;
-		alt: string;
-		size: string;
-	}
-
-	let { src, alt, size }: Props = $props();
+<script>
+	/** @type {{src: string, alt: string, size: string}}*/
+	let { src, alt, size } = $props();
 
 	let urlString = $derived(`url("${src}")`);
 </script>

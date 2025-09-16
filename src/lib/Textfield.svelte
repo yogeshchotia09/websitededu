@@ -1,31 +1,30 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import Icon from './Icon.svelte';
 
-	interface Props {
-		id: string;
-		placeholder: string;
-		required: boolean;
-		disabled: boolean;
-		value: string | undefined;
-		textTransform?: string;
-		autocomplete?: string;
-		maxLength?: number | undefined;
-		minLength?: number | undefined;
-		showInvalid?: boolean;
-		inputmode?:
-			| 'text'
-			| 'search'
-			| 'none'
-			| 'tel'
-			| 'url'
-			| 'email'
-			| 'numeric'
-			| 'decimal'
-			| undefined;
-	}
-
+	/** @type {{
+	* id: string;
+	* placeholder: string;
+	* required: boolean;
+	* disabled: boolean;
+	* value: string | undefined;
+	* textTransform?: string;
+	* autocomplete?: import("svelte/elements").FullAutoFill | null | undefined;
+	* maxLength?: number | undefined;
+	* minLength?: number | undefined;
+	* showInvalid?: boolean;
+	* inputmode?:
+	* 	| 'text'
+	* 	| 'search'
+	* 	| 'none'
+	* 	| 'tel'
+	* 	| 'url'
+	* 	| 'email'
+	* 	| 'numeric'
+	* 	| 'decimal'
+	* 	| undefined;
+	}} */
 	let {
 		id,
 		placeholder,
@@ -38,7 +37,7 @@
 		minLength = undefined,
 		showInvalid = true,
 		inputmode = undefined
-	}: Props = $props();
+	} = $props();
 </script>
 
 <div style:position="relative">

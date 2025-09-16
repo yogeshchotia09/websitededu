@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import factual from '$lib/assets/correct.svg';
@@ -7,13 +7,12 @@
 	import { scale } from 'svelte/transition';
 	import Icon from './Icon.svelte';
 
-	interface Props {
-		value: boolean;
-		color?: string | undefined;
-		attention?: boolean;
-	}
-
-	let { value = $bindable(), color = undefined, attention = false }: Props = $props();
+	/** @type {{
+	 *  value: boolean;
+	 *  color?: string | undefined;
+	 *  attention?: boolean;
+	}} */
+	let { value = $bindable(), color = undefined, attention = false } = $props();
 
 	const duration = 150;
 </script>

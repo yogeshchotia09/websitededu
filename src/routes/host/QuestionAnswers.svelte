@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import AnsweredCount from '$lib/Game/AnsweredCount.svelte';
 	import think from '$lib/assets/kevin_macleod_thinking_music.mp3';
 	import Answers from '$lib/Game/Answers.svelte';
@@ -9,23 +9,8 @@
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import Audio from '$lib/Audio.svelte';
-	import type { BindableGameInfo, SharedGameInfo } from './+page';
-	import type { Media } from '$lib/types';
 
-	interface Props {
-		bindableGameInfo: BindableGameInfo;
-		gameInfo: SharedGameInfo;
-		questionText: string;
-		answers: (string | undefined)[];
-		timeLeft: number | undefined;
-		timeStarted: number | undefined;
-		answeredCount: number;
-		media: Media | undefined;
-		onlock?: (locked: boolean) => void;
-		onnext?: () => void;
-		onanswer?: (answer: number) => void;
-	}
-
+	/** @type {{bindableGameInfo: import('./+page').BindableGameInfo, gameInfo: import('./+page').SharedGameInfo, questionText: string, answers: (string | undefined)[], timeLeft: number | undefined, timeStarted: number | undefined, answeredCount: number, media: import('$lib/types').Media | undefined, onlock?: (locked: boolean) => void, onnext?: () => void, onanswer?: (answer: number) => void}}*/
 	let {
 		bindableGameInfo = $bindable(),
 		gameInfo,
@@ -38,9 +23,10 @@
 		onlock,
 		onnext,
 		onanswer
-	}: Props = $props();
+	} = $props();
 
-	let fullscreenElement: HTMLElement | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let fullscreenElement = $state();
 </script>
 
 <Audio audioUrl={think} volumeOn={bindableGameInfo.volumeOn} />

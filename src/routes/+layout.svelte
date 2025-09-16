@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import '@oddbird/popover-polyfill';
 	import '@fontsource/poppins/800.css';
 	import '@fontsource/atkinson-hyperlegible';
@@ -8,16 +8,18 @@
 	import Loading from '$lib/Loading.svelte';
 	import { onMount, untrack } from 'svelte';
 
-	interface Props {
-		children?: import('svelte').Snippet;
-	}
-
-	let { children }: Props = $props();
+	let { children } = $props();
 
 	let mounting = $state(true);
 	let navigatingBoolean = $derived(navigating.type !== null);
 
-	const startTimer = (f: () => void, ms: number) => {
+	/**
+	 * Starts a timer that will call the provided function after the specified milliseconds.
+	 * Returns a function that can be called to clear the timer before it executes.
+	 * @param {() => void} f The callback function to execute after the timer expires.
+	 * @param {number} ms The delay in milliseconds before the callback is executed.
+	 */
+	const startTimer = (f, ms) => {
 		let timer = setTimeout(f, ms);
 		return () => {
 			clearTimeout(timer);

@@ -1,13 +1,9 @@
-<script lang="ts">
+<script>
 	import Icon from '$lib/Icon.svelte';
 	import score_image from '$lib/assets/score.svg';
 
-	interface Props {
-		name: string;
-		score?: number | undefined;
-	}
-
-	let { name, score = undefined }: Props = $props();
+	/** @type {{name: string;score?: number | undefined;}} */
+	let { name, score = undefined } = $props();
 </script>
 
 <div

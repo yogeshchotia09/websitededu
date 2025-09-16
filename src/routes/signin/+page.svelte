@@ -1,16 +1,11 @@
-<script lang="ts">
+<script>
 	import FancyButton from '$lib/FancyButton.svelte';
 	import { signIn } from '@auth/sveltekit/client';
-	import type { PageData } from './$types';
 	import MainHeader from '../MainHeader.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data } = $props();
 </script>
 
 <NiceBackground>

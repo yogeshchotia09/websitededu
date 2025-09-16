@@ -1,25 +1,23 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import LeaderboardRecord from '$lib/Game/LeaderboardRecord.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
-	import type { BindableGameInfo, SharedGameInfo, TruncatedList } from './+page';
 	import { flip } from 'svelte/animate';
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 
-	interface Props {
-		bindableGameInfo: BindableGameInfo;
-		gameInfo: SharedGameInfo;
-		final: boolean;
-		prior: TruncatedList<[string, number]>;
-		current: TruncatedList<[string, number]>;
-		onlock?: (locked: boolean) => void;
-		onnext?: () => void;
-	}
-
+	/** @type {{
+	 * bindableGameInfo: import('./+page').BindableGameInfo;
+	 * gameInfo: import('./+page').SharedGameInfo;
+	 * final: boolean;
+	 * prior: import('./+page').TruncatedList<[string, number]>;
+	 * current: import('./+page').TruncatedList<[string, number]>;
+	 * onlock?: (locked: boolean) => void;
+	 * onnext?: () => void;
+	}} */
 	let {
 		bindableGameInfo = $bindable(),
 		gameInfo,
@@ -28,7 +26,7 @@
 		current,
 		onlock,
 		onnext
-	}: Props = $props();
+	} = $props();
 
 	let displayed = $state({
 		exact_count: current.exact_count,
@@ -45,7 +43,8 @@
 		displayed_final = final;
 	});
 
-	let fullscreenElement: HTMLElement | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let fullscreenElement = $state();
 </script>
 
 <div

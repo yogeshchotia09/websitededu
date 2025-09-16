@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import Answers from '$lib/Game/Answers.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Statistics from '$lib/Game/Statistics.svelte';
@@ -6,19 +6,17 @@
 	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
-	import type { BindableGameInfo, SharedGameInfo } from './+page';
 
-	interface Props {
-		bindableGameInfo: BindableGameInfo;
-		gameInfo: SharedGameInfo;
-		questionText: string;
-		answers: { text: string; count: number; correct: boolean }[];
-		timeLeft?: number | undefined;
-		timeStarted?: number | undefined;
-		onlock?: (locked: boolean) => void;
-		onnext?: () => void;
-	}
-
+	/** @type {{
+	 * bindableGameInfo: import('./+page').BindableGameInfo;
+	 * gameInfo: import('./+page').SharedGameInfo;
+	 * questionText: string;
+	 * answers: { text: string; count: number; correct: boolean }[];
+	 * timeLeft?: number | undefined;
+	 * timeStarted?: number | undefined;
+	 * onlock?: (locked: boolean) => void;
+	 * onnext?: () => void;
+	}}*/
 	let {
 		bindableGameInfo = $bindable(),
 		gameInfo,
@@ -28,9 +26,10 @@
 		timeStarted = undefined,
 		onlock,
 		onnext
-	}: Props = $props();
+	} = $props();
 
-	let fullscreenElement: HTMLElement | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let fullscreenElement = $state();
 </script>
 
 <div

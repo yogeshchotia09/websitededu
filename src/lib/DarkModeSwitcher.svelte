@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
@@ -6,9 +6,14 @@
 	import lightMode from '$lib/assets/light_mode.svg';
 	import { browser } from '$app/environment';
 
-	let theme: boolean | undefined = $state(undefined);
+	/** @type {boolean | undefined} */
+	let theme = $state(undefined);
 
-	function getName(state: boolean): string {
+	/**
+	 * @param {boolean} state
+	 * @returns {string}
+	 */
+	function getName(state) {
 		return state ? 'dark' : 'light';
 	}
 

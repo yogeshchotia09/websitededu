@@ -1,16 +1,12 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { toDataURL } from 'qrcode';
 	import LoadingCircle from '../LoadingCircle.svelte';
 	import { createDialog } from 'svelte-headlessui';
 
-	interface Props {
-		url: string;
-		smallSize: string;
-	}
-
-	let { url, smallSize }: Props = $props();
+	/** @type {{url: string;smallSize: string;}} */
+	let { url, smallSize } = $props();
 
 	let image = $derived(toDataURL(url, { scale: 1 }));
 

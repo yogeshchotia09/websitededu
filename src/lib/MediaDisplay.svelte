@@ -1,15 +1,10 @@
-<script lang="ts">
+<script>
 	import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
 	import { inlineSvg } from '@svelte-put/inline-svg';
 	import MediaFallback from './MediaFallback.svelte';
-	import type { Media } from './types';
 
-	interface Props {
-		media: Media;
-		fit: string;
-	}
-
-	let { media, fit }: Props = $props();
+	/** @type {{ media: import('./types').Media, fit: string }} */
+	let { media, fit } = $props();
 </script>
 
 {#if 'Base64' in media.Image}

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 	import { PUBLIC_DISPLAY_PLAY_URL, PUBLIC_PLAY_URL } from '$env/static/public';
 	import FancyButton from '$lib/FancyButton.svelte';
@@ -13,30 +13,21 @@
 	import locked from '$lib/assets/locked.svg';
 	import QrCode from '$lib/Game/QRCode.svelte';
 	import { onMount } from 'svelte';
-	import type { BindableGameInfo } from './+page';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import ExitFuiz from './ExitFuiz.svelte';
 	import tippy from 'tippy.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	interface Props {
-		code: string;
-		players: string[];
-		exact_count: number;
-		bindableGameInfo: BindableGameInfo;
-		onnext?: () => void;
-		onlock?: (locked: boolean) => void;
-	}
-
-	let {
-		code,
-		players,
-		exact_count,
-		bindableGameInfo = $bindable(),
-		onnext,
-		onlock
-	}: Props = $props();
+	/** @type {{
+	 * code: string;
+	 * players: string[];
+	 * exact_count: number;
+	 * bindableGameInfo: import('./+page').BindableGameInfo;
+	 * onnext?: () => void;
+	 * onlock?: (locked: boolean) => void;
+	}}*/
+	let { code, players, exact_count, bindableGameInfo = $bindable(), onnext, onlock } = $props();
 
 	let actualUrl = $derived(PUBLIC_PLAY_URL + localizeHref('/play?code=' + code));
 
@@ -44,9 +35,11 @@
 		navigator.clipboard.writeText(actualUrl);
 	}
 
-	let fullscreenElement: HTMLElement | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let fullscreenElement = $state();
 
-	let copyUrlButton: HTMLButtonElement | undefined = $state();
+	/** @type {HTMLButtonElement | undefined} */
+	let copyUrlButton = $state();
 
 	onMount(() => {
 		if (!copyUrlButton) return;

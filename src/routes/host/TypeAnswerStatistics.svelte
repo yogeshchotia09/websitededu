@@ -1,28 +1,26 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 	import factual from '$lib/assets/correct.svg';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import TimeLeft from '$lib/Game/TimeLeft.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
-	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import Icon from '$lib/Icon.svelte';
 	import { buttonColors } from '$lib';
 	import { toSorted } from '$lib/util';
 
-	interface Props {
-		bindableGameInfo: BindableGameInfo;
-		gameInfo: SharedGameInfo;
-		questionText: string;
-		answers: string[];
-		caseSensitive: boolean;
-		results: [string, number][];
-		timeLeft?: number | undefined;
-		timeStarted?: number | undefined;
-		onlock?: (locked: boolean) => void;
-		onnext?: () => void;
-	}
-
+	/** @type {{
+	 * bindableGameInfo: import('./+page').BindableGameInfo;
+	 * gameInfo: import('./+page').SharedGameInfo;
+	 * questionText: string;
+	 * answers: string[];
+	 * caseSensitive: boolean;
+	 * results: [string, number][];
+	 * timeLeft?: number | undefined;
+	 * timeStarted?: number | undefined;
+	 * onlock?: (locked: boolean) => void;
+	 * onnext?: () => void;
+	}}*/
 	let {
 		bindableGameInfo = $bindable(),
 		gameInfo,
@@ -34,7 +32,7 @@
 		timeStarted = undefined,
 		onlock = undefined,
 		onnext = undefined
-	}: Props = $props();
+	} = $props();
 
 	let allAnswers = $derived(
 		toSorted(
@@ -52,7 +50,13 @@
 
 	let maxCount = $derived(Math.max(...allAnswers.map(([, count]) => count), 1));
 
-	function matches(answerA: string, answerB: string, caseSensitive: boolean): boolean {
+	/**
+	 * @param {string} answerA
+	 * @param {string} answerB
+	 * @param {boolean} caseSensitive
+	 * @returns {boolean}
+	 */
+	function matches(answerA, answerB, caseSensitive) {
 		const trimmedA = answerA.trim();
 		const trimmedB = answerB.trim();
 		return caseSensitive
@@ -60,11 +64,16 @@
 			: trimmedA.toLowerCase() === trimmedB.toLowerCase();
 	}
 
-	let isCorrect = $derived((text: string) =>
-		answers.some((answer) => matches(answer, text, caseSensitive))
+	let isCorrect = $derived(
+		/**
+		 * @param {string} text
+		 * @return {boolean}
+		 */
+		(text) => answers.some((answer) => matches(answer, text, caseSensitive))
 	);
 
-	let fullscreenElement: HTMLElement | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let fullscreenElement = $state();
 </script>
 
 <div

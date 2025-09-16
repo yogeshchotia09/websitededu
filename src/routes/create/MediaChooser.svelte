@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { buttonColors } from '$lib';
@@ -8,26 +8,27 @@
 	import Icon from '$lib/Icon.svelte';
 	import Textarea from '$lib/Textarea.svelte';
 	import IconButton from '$lib/IconButton.svelte';
-	import type { Media } from '$lib/types';
 	import tippy from 'tippy.js';
 
-	interface Props {
-		media: Media | null | undefined;
-	}
-
-	let { media = $bindable() }: Props = $props();
+	/** @type {{media: import('$lib/types').Media | null | undefined;}} */
+	let { media = $bindable() } = $props();
 
 	let dragOver = $state(false);
 
 	function load_from_input() {
 		const target = document.querySelector('input[type=file]');
 		if (target) {
-			const inputImage = target as HTMLInputElement;
+			/** @type {HTMLInputElement} */
+			// @ts-ignore
+			const inputImage = target;
 			loadFile(inputImage.files?.item(0) ?? undefined);
 		}
 	}
 
-	function loadFile(file: File | undefined) {
+	/**
+	 * @param {File | undefined} file
+	 */
+	function loadFile(file) {
 		dragOver = false;
 		if (file == undefined) {
 			media = undefined;

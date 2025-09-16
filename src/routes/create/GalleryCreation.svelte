@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import delete_fuiz from '$lib/assets/delete.svg';
@@ -6,40 +6,44 @@
 	import IconButton from '$lib/IconButton.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import { onMount } from 'svelte';
-	import type { Media } from '$lib/types';
 	import { getLocale } from '$lib/paraglide/runtime.js';
-	import type { Instance } from 'tippy.js';
 	import tippy from 'tippy.js';
 
-	interface Props {
-		id: number;
-		title: string;
-		lastEdited: number;
-		slidesCount: number;
-		media: Media | undefined;
-		ondelete: () => void;
-		onplay: () => void;
-		ondownload: () => void;
-		onshare: (tippyInstance: Instance) => void;
-	}
-
-	let { id, title, lastEdited, slidesCount, media, ondelete, onplay, ondownload, onshare }: Props =
+	/** @type {{
+	 * id: number;
+	 * title: string;
+	 * lastEdited: number;
+	 * slidesCount: number;
+	 * media: import('$lib/types').Media | undefined;
+	 * ondelete: () => void;onplay: () => void;
+	 * ondownload: () => void;
+	 * onshare: (tippyInstance: import('tippy.js').Instance) => void;
+	 * }} */
+	let { id, title, lastEdited, slidesCount, media, ondelete, onplay, ondownload, onshare } =
 		$props();
 
-	const same_year = { month: 'short', day: 'numeric' } as const;
-	const diff_year = { year: 'numeric', month: 'numeric', day: 'numeric' } as const;
+	/** @type {{month: 'short', day: 'numeric'}} */
+	const same_year = { month: 'short', day: 'numeric' };
+	/** @type {{year: 'numeric', month: 'numeric', day: 'numeric'}} */
+	const diff_year = { year: 'numeric', month: 'numeric', day: 'numeric' };
 
-	function dateToString(date: Date): string {
+	/**
+	 * @param {Date} date
+	 * @returns {string}
+	 */
+	function dateToString(date) {
 		let currentDate = new Date();
 		if (currentDate.getFullYear() == date.getFullYear()) {
-			return date.toLocaleDateString(getLocale, same_year);
+			return date.toLocaleDateString(getLocale(), same_year);
 		} else {
-			return date.toLocaleDateString(getLocale, diff_year);
+			return date.toLocaleDateString(getLocale(), diff_year);
 		}
 	}
 
-	let shareElement: HTMLElement | undefined = $state();
-	let tippyInstance: Instance | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let shareElement = $state();
+	/** @type {import('tippy.js').Instance | undefined} */
+	let tippyInstance = $state();
 
 	onMount(() => {
 		if (!shareElement) return;

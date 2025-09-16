@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';

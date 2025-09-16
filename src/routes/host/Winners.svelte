@@ -1,22 +1,15 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
-	import type { BindableGameInfo, SharedGameInfo } from './+page';
 
-	interface Props {
-		bindableGameInfo: BindableGameInfo;
-		gameInfo: SharedGameInfo;
-		winners: string[];
-		lock: () => void;
-		next: () => void;
-	}
+	/** @type {{bindableGameInfo: import('./+page').BindableGameInfo;gameInfo: import('./+page').SharedGameInfo;winners: string[];lock: () => void;next: () => void;}} */
+	let { bindableGameInfo = $bindable(), gameInfo, winners, lock, next } = $props();
 
-	let { bindableGameInfo = $bindable(), gameInfo, winners, lock, next }: Props = $props();
-
-	let fullscreenElement: HTMLElement | undefined = $state();
+	/** @type {HTMLElement | undefined} */
+	let fullscreenElement = $state();
 </script>
 
 <div style:height="100%" bind:this={fullscreenElement}>

@@ -1,9 +1,6 @@
-<script lang="ts">
-	interface Props {
-		borderWidth?: number;
-	}
-
-	let { borderWidth = 4 }: Props = $props();
+<script>
+	/** @type {{ borderWidth?: number }} */
+	let { borderWidth = 4 } = $props();
 </script>
 
 <div style:--border-width="{borderWidth}px"></div>

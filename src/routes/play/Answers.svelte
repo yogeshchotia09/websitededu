@@ -1,23 +1,13 @@
-<script lang="ts">
+<script>
 	import Answers from '$lib/Game/Answers.svelte';
 	import EmptyAnswers from '$lib/Game/EmptyAnswers.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import MediaDisplay from '$lib/MediaDisplay.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
-	import type { Media, TextOrMedia } from '$lib/types';
 	import Topbar from './Topbar.svelte';
 
-	interface Props {
-		questionText: string;
-		name: string;
-		score: number;
-		media: undefined | Media;
-		showAnswers: boolean;
-		answers: (TextOrMedia | undefined)[];
-		onanswer?: (answer: number) => void;
-	}
-
-	let { questionText, name, score, media, showAnswers, answers, onanswer }: Props = $props();
+	/** @type {{questionText: string;name: string;score: number;media: undefined | import('$lib/types').Media;showAnswers: boolean;answers: (import('$lib/types').TextOrMedia | undefined)[];onanswer?: (answer: number) => void;}} */
+	let { questionText, name, score, media, showAnswers, answers, onanswer } = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">

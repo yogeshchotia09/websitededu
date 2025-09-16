@@ -1,15 +1,11 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
-	import type { TypeAnswer } from '$lib/types';
 	import { buttonColors } from '$lib';
 
-	interface Props {
-		slide: TypeAnswer;
-	}
-
-	let { slide }: Props = $props();
+	/** @type {{slide: import('$lib/types').TypeAnswer;}} */
+	let { slide } = $props();
 </script>
 
 <div

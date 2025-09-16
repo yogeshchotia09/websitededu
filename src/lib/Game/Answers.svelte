@@ -1,23 +1,26 @@
-<script lang="ts">
+<script>
 	import TextAnswerButton from './TextAnswerButton.svelte';
 	import EmptyAnswerButton from './EmptyAnswerButton.svelte';
 
-	interface Props {
-		answers: { text: string | undefined; correct: boolean | undefined }[];
-		onanswer?: (index: number) => void;
-	}
+	/** @type {{answers: { text: string | undefined; correct: boolean | undefined }[], onanswer?: (index: number) => void}}*/
+	let { answers, onanswer } = $props();
 
-	let { answers, onanswer }: Props = $props();
+	/** @typedef {{index: number, text: string, correct: (boolean|undefined)}} KnownAnswer */
+	/** @typedef {{index: number, correct: (boolean|undefined)}} UnknownAnswer */
 
-	type knownAnswer = { index: number; text: string; correct: boolean | undefined };
-	type unknownAnswer = { index: number; correct: boolean | undefined };
-
-	function filterAnswers(answers: { text: string | undefined; correct: boolean | undefined }[]): {
-		knownAnswers: knownAnswer[];
-		unknownAnswers: unknownAnswer[];
-	} {
-		let knownAnswers: knownAnswer[] = [];
-		let unknownAnswers: unknownAnswer[] = [];
+	/**
+	 * Filters an array of answers, separating them into two groups: known and unknown.
+	 * 'Known' answers are assumed to have defined `text` and `correct` properties,
+	 * while 'unknown' answers are placeholders that may lack these properties.
+	 *
+	 * @param {{ text: string | undefined; correct: boolean | undefined }[]} answers - The array of answer objects to filter.
+	 * @returns {{knownAnswers: KnownAnswer[], unknownAnswers: UnknownAnswer[]}} An object containing two arrays: one for answers with complete data (`knownAnswers`) and one for answers with incomplete data (`unknownAnswers`).
+	 */
+	function filterAnswers(answers) {
+		/** @type {KnownAnswer[]} */
+		let knownAnswers = [];
+		/** @type {UnknownAnswer[]} */
+		let unknownAnswers = [];
 		answers.forEach(({ text, correct }, index) => {
 			if (text) {
 				knownAnswers.push({

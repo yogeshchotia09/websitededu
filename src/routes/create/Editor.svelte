@@ -1,25 +1,22 @@
-<script lang="ts">
+<script>
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { assertUnreachable, fixTimes, removeIds } from '$lib';
-	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
-	import type { FuizConfig } from '$lib/types';
+	import { updateCreation } from '$lib/storage';
 	import { debounce } from '$lib/util';
 	import Main from './Main.svelte';
 	import Topbar from './Topbar.svelte';
 	import { share } from './lib';
 	import { page } from '$app/state';
 	import { untrack } from 'svelte';
-	import type { Instance } from 'tippy.js';
 
-	interface Props {
-		id: number;
-		exportedFuiz: ExportedFuiz;
-		config: FuizConfig;
-		db: Database;
-	}
-
-	let { id = $bindable(), exportedFuiz = $bindable(), config = $bindable(), db }: Props = $props();
+	/** @type {{
+	 * id: number;
+	 * exportedFuiz: import('$lib/storage').ExportedFuiz;
+	 * config: import('$lib/types').FuizConfig;
+	 * db: import('$lib/storage').Database;
+	 * }} */
+	let { id = $bindable(), exportedFuiz = $bindable(), config = $bindable(), db } = $props();
 
 	const updateStorage = debounce(() => {
 		exportedFuiz = {
@@ -107,7 +104,8 @@
 		}).length > 0
 	);
 
-	async function onShare(e: Instance) {
+	/** @param {import('tippy.js').Instance} e */
+	async function onShare(e) {
 		await share(removeIds(config), page.data.user ? exportedFuiz.uniqueId : undefined);
 		e.show();
 	}
