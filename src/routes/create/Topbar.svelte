@@ -82,7 +82,7 @@
 	style:justify-content="center"
 >
 	<a
-		href={'/create'}
+		href="/create"
 		style:height="65px"
 		style:margin="0 5px"
 		style:overflow="hidden"

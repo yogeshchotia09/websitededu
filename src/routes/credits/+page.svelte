@@ -130,13 +130,13 @@
 				href="https://incompetech.com/wordpress/"
 				image={{ src: music, alt: m.music() }}
 				background="#23456740"
-				message={'"Thinking Music" Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License. http://creativecommons.org/licenses/by/4.0/'}
+				message="&quot;Thinking Music&quot; Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License. http://creativecommons.org/licenses/by/4.0/"
 			/>
 			<AnchorMessage
 				href="https://www.youtube.com/watch?v=_h47TNIKJYo&pp=ygUHIGJlZS4gMw%3D%3D"
 				image={{ src: music, alt: m.music() }}
 				background="#23456740"
-				message={'"bee. 3" GroovyDominoes52. can use in your videos or games but always remember to credit and not steal'}
+				message="&quot;bee. 3&quot; GroovyDominoes52. can use in your videos or games but always remember to credit and not steal"
 			/>
 		</section>
 	</div>

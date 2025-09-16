@@ -54,7 +54,7 @@
 				</ul>
 			{:else}
 				<div>
-					<FancyAnchorButton href={'/create'}>
+					<FancyAnchorButton href="/create">
 						<div class="create">{m.create()}</div>
 					</FancyAnchorButton>
 				</div>

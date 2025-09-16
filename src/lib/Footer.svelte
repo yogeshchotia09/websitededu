@@ -24,7 +24,7 @@
 	style:justify-content="center"
 	style:flex-wrap="wrap"
 >
-	<Anchor href={'/credits'}>
+	<Anchor href="/credits">
 		<div style:display="inline-flex" style:align-items="center" style:gap="0.2em">
 			<Icon src={diversity} alt={m.community()} size="1em" />
 			<div>{m.community()}</div>
