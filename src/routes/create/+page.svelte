@@ -60,7 +60,7 @@
 	<meta property="og:title" content={title} />
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
-	<link rel="canonical" href="{PUBLIC_PLAY_URL}{localizeHref('/create')}" />
+	<link rel="canonical" href={localizeHref(`${PUBLIC_PLAY_URL}/create`)} />
 </svelte:head>
 
 {#if status === 'loading'}

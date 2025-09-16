@@ -10,6 +10,7 @@
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import { getAllCreations, loadDatabase } from '$lib/storage';
 	import { toSorted } from '$lib/util';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	let { data } = $props();
 
@@ -54,7 +55,7 @@
 				</ul>
 			{:else}
 				<div>
-					<FancyAnchorButton href="/create">
+					<FancyAnchorButton href={localizeHref('/create')}>
 						<div class="create">{m.create()}</div>
 					</FancyAnchorButton>
 				</div>

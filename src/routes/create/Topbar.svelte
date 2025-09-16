@@ -9,6 +9,7 @@
 	import { getCreation } from '$lib/storage';
 	import { onMount } from 'svelte';
 	import tippy from 'tippy.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	/** @type {{
 	 * title: string;
@@ -82,7 +83,7 @@
 	style:justify-content="center"
 >
 	<a
-		href="/create"
+		href={localizeHref('/create')}
 		style:height="65px"
 		style:margin="0 5px"
 		style:overflow="hidden"

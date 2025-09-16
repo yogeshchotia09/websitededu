@@ -9,13 +9,14 @@
 	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
 	import { page } from '$app/state';
 	import { signOut } from '@auth/sveltekit/client';
+	import { localizeHref } from '$lib/paraglide/runtime';
 </script>
 
 <header>
 	<Header />
 	<nav style:font-size="0.8em">
 		<div>
-			<FancyAnchorButton href="/create">
+			<FancyAnchorButton href={localizeHref('/create')}>
 				<div class="a">
 					<Icon src="$lib/assets/paint.svg" alt={m.create()} size="1.2em" />
 					<div>{m.create()}</div>
@@ -23,7 +24,7 @@
 			</FancyAnchorButton>
 		</div>
 		<div>
-			<FancyAnchorButton href="/play">
+			<FancyAnchorButton href={localizeHref('/play')}>
 				<div class="a">
 					<Icon size="1.2em" src="$lib/assets/game.svg" alt={m.play()} />
 					<div>{m.play()}</div>
@@ -31,7 +32,7 @@
 			</FancyAnchorButton>
 		</div>
 		<div>
-			<FancyAnchorButton href="/library">
+			<FancyAnchorButton href={localizeHref('/library')}>
 				<div class="a">
 					<Icon size="1.2em" src="$lib/assets/library.svg" alt={m.library()} />
 					<div>{m.library()}</div>
@@ -57,7 +58,7 @@
 			</div>
 		{:else}
 			<div>
-				<FancyAnchorButton href="/signin">
+				<FancyAnchorButton href={localizeHref('/signin')}>
 					<div class="a">
 						<Icon size="1.2em" src="$lib/assets/login.svg" alt={m.login()} />
 						<div>{m.login()}</div>

@@ -49,7 +49,7 @@
 	<meta property="og:title" content={title} />
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
-	<link rel="canonical" href="{PUBLIC_PLAY_URL}{localizeHref('/publish')}" />
+	<link rel="canonical" href={localizeHref(`${PUBLIC_PLAY_URL}/publish`)} />
 </svelte:head>
 
 {#if id}
@@ -95,7 +95,7 @@
 						</ul>
 					{:else}
 						<div>
-							<FancyAnchorButton href="/create">
+							<FancyAnchorButton href={localizeHref('/create')}>
 								<div class="create">{m.create()}</div>
 							</FancyAnchorButton>
 						</div>
