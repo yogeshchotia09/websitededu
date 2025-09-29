@@ -97,7 +97,11 @@
 				} else if ('Summary' in new_msg.Game) {
 					currentState = {
 						Game: {
-							Summary: new_msg.Game.Summary.Host
+							Summary: {
+								...new_msg.Game.Summary.Host,
+								team_mapping: Object.fromEntries(new_msg.Game.Summary.Host.team_mapping),
+								results: Object.fromEntries(new_msg.Game.Summary.Host.results)
+							}
 						}
 					};
 					finished = true;
@@ -411,8 +415,8 @@
 			bind:bindableGameInfo
 		/>
 	{:else if 'Summary' in currentState.Game}
-		{@const { stats, player_count, config, options } = currentState.Game.Summary}
-		<Summary {stats} {player_count} {config} {options} />
+		{@const { stats, player_count, config, options, results } = currentState.Game.Summary}
+		<Summary {stats} {player_count} {config} {options} {results} />
 	{/if}
 {:else if 'Slide' in currentState}
 	{@const { Slide: slide, index, count } = currentState}
