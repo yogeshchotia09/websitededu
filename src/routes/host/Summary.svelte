@@ -5,22 +5,40 @@
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import TypicalPage from '$lib/TypicalPage.svelte';
+	import FancyAnchorButton from '$lib/FancyAnchorButton.svelte';
 
 	/** @type {{
 	 * stats: [number, number][];
 	 * player_count: number;
 	 * config: import('$lib/types').IdlessFuizConfig;
 	 * options: import('$lib/types').FuizOptions;
+	 * results: { [k: string]: number };
 	}}*/
-	let { stats, player_count, config, options } = $props();
+	let { stats, player_count, config, options, results } = $props();
 </script>
 
 <TypicalPage>
 	<div id="summary">
-		<div>
-			<FancyButton onclick={() => playIdlessConfig(config, options)}>
-				<div style:padding="0 0.3em">{m.play_again()}</div>
-			</FancyButton>
+		<div id="actions">
+			<div class="action-container">
+				<FancyButton onclick={() => playIdlessConfig(config, options)}>
+					<div class="action">{m.play_again()}</div>
+				</FancyButton>
+			</div>
+			{#if Object.keys(results).length > 0}
+				<div class="action-container">
+					<FancyAnchorButton
+						href="data:text/csv;charset=utf-8,{encodeURIComponent(
+							Object.entries(results)
+								.map(([team, score]) => `${team},${score}`)
+								.join('\n')
+						)}"
+						download="results.csv"
+					>
+						<div class="action">{m.download_results()}</div>
+					</FancyAnchorButton>
+				</div>
+			{/if}
 		</div>
 		{#each config.slides as slide, index}
 			{@const [correct, wrong] = stats.at(index) || [0, 0]}
@@ -68,6 +86,21 @@
 		gap: 0.2em;
 		width: 100%;
 		max-width: min(40ch, 90vw);
+	}
+
+	#actions {
+		display: flex;
+		gap: 0.2em;
+		flex-wrap: wrap;
+	}
+
+	#actions .action-container {
+		flex: 1;
+	}
+
+	#actions .action {
+		padding: 0 0.3em;
+		text-align: center;
 	}
 
 	.line {

@@ -5,12 +5,15 @@
 	 * backgroundDeepColor: string;
 	 * href: string;
 	 * children?: import('svelte').Snippet;
+	 * download?: any;
 	}}*/
-	let { foregroundColor, backgroundColor, backgroundDeepColor, href, children } = $props();
+	let { foregroundColor, backgroundColor, backgroundDeepColor, href, children, download } =
+		$props();
 </script>
 
 <a
 	{href}
+	{download}
 	style:display="flex"
 	style:background="none"
 	style:border="none"
@@ -32,7 +35,7 @@
 		<div
 			class="front"
 			style:background={backgroundColor}
-			style:border="0.15em solid {backgroundDeepColor}"
+			style:border="0.1em solid {backgroundDeepColor}"
 			style:border-radius="0.7em"
 			style:box-sizing="border-box"
 			style:color={foregroundColor}

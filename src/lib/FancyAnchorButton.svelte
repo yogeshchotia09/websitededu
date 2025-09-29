@@ -7,13 +7,15 @@
 	 * backgroundDeepColor?: string;
 	 * href: string;
 	 * children?: import('svelte').Snippet;
+	 * download?: any;
 	}}*/
 	let {
 		foregroundColor = undefined,
 		backgroundColor = undefined,
 		backgroundDeepColor = undefined,
 		href,
-		children
+		download,
+		children,
 	} = $props();
 </script>
 
@@ -22,6 +24,7 @@
 	backgroundColor={backgroundColor ?? '#D4131B'}
 	backgroundDeepColor={backgroundDeepColor ?? '#A40E13'}
 	{href}
+	{download}
 >
 	<div
 		style:height="100%"

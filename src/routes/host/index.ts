@@ -16,6 +16,8 @@ type GameState =
 			Summary: {
 				stats: [number, number][];
 				player_count: number;
+				results: { [k: string]: number };
+				team_mapping: { [k: string]: string[] };
 				config: IdlessFuizConfig;
 				options: FuizOptions;
 			};
@@ -107,6 +109,8 @@ type GameIncomingMessage =
 				Host: {
 					stats: [number, number][];
 					player_count: number;
+					results: [string, number][];
+					team_mapping: [string, string[]][];
 					config: IdlessFuizConfig;
 					options: FuizOptions;
 				};
